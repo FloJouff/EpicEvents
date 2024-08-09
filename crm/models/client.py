@@ -30,7 +30,6 @@ class Client(Base):
 
     def __init__(
         self,
-        client_id,
         name,
         firstname,
         email,
@@ -43,7 +42,6 @@ class Client(Base):
         """Client constructor
 
         Args:
-            client_id (int): client.id
             name (str): client's name
             first_name (str): client's first_name
             email (str): client's email
@@ -54,7 +52,6 @@ class Client(Base):
             contact_id (str): id of teamuser in charge of this client
 
         """
-        self.client_id = client_id
         self.name = name
         self.firstname = firstname
         self.email = email

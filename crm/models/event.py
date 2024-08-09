@@ -41,7 +41,6 @@ class Event(Base):
 
     def __init__(
         self,
-        event_id,
         contract_id,
         client_id,
         support_id,
@@ -54,7 +53,6 @@ class Event(Base):
         """Event constructor
 
         Args:
-            event_id (int): event.id
             contract_id (int): event's contract's id
             client_id (int): event's client's id
             support_id (int): client's contact in EpicEvents
@@ -66,7 +64,6 @@ class Event(Base):
 
         """
 
-        self.event_id = event_id
         self.client_id = client_id
         self.contract_id = contract_id
         self.support_id = support_id
@@ -77,7 +74,7 @@ class Event(Base):
         self.notes = notes
 
     def __repr__(self):
-        return f"Event: {self.id} from {self.client_id}. User in charge: {self.support_id}"
+        return f"Event: event from {self.client_id}. User in charge: {self.support_id}"
 
 
 Contract.events = relationship(

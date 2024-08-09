@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
@@ -15,6 +15,7 @@ engine = create_engine(db_url, echo=True)
 
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
+print(db_url)
 
 
 def init_db():
