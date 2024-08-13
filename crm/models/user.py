@@ -7,12 +7,13 @@ from argon2 import PasswordHasher, exceptions
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 ph = PasswordHasher()
 
+
 class User(Base):
     __tablename__ = "users"
 
     user_id = Column("user_id", Integer, primary_key=True, autoincrement=True)
     name = Column("name", String(65))
-    firstname = Column("fisrtname", String(65))
+    firstname = Column("firstname", String(65))
     email = Column("email", String(255), unique=True)
     password = Column("password", String(65))
     role_id = Column(
@@ -54,7 +55,8 @@ class User(Base):
             return False
 
     def check_permission(self, action):
-        """Check if the user has permission to perform an action based on their role."""
+        """Check if the user has permission
+        to perform an action based on their role."""
         return self.role.has_permission(action)
 
     def __repr__(self):

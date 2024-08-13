@@ -15,7 +15,6 @@ engine = create_engine(db_url, echo=True)
 
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
-print(db_url)
 
 
 def init_db():

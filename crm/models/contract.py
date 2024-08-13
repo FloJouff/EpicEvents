@@ -5,16 +5,23 @@ from sqlalchemy import (
     Integer,
     DateTime,
     Boolean,
+    String,
 )
 from crm.database import Base
 from sqlalchemy.orm import relationship
 from crm.models.client import Client
 
 
+def generate_uuid():
+    return str(uuid.uuid4())
+
+
 class Contract(Base):
     __tablename__ = "contracts"
 
-    contract_id = Column("contract_id", Integer, primary_key=True)
+    contract_id = Column(
+        "contract_id", String(65), primary_key=True, default=generate_uuid
+    )
     client_id = Column(
         "client_id",
         Integer,
@@ -41,7 +48,7 @@ class Contract(Base):
         remain_amount,
         creation_date,
         contract_status,
-        contract_id=uuid,
+        # contract_id=uuid,
     ):
         """Contract constructor
 
@@ -57,7 +64,7 @@ class Contract(Base):
             contact_name (str): name of teamuser in charge of this client
 
         """
-        self.contract_id = contract_id
+        # self.contract_id = contract_id
         self.client_id = client_id
         self.commercial_id = commercial_id
         self.total_amount = total_amount

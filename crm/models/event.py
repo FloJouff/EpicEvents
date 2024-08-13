@@ -18,7 +18,7 @@ class Event(Base):
     )
     contract_id = Column(
         "contract_id",
-        Integer,
+        String(65),
         ForeignKey("contracts.contract_id", ondelete="SET NULL"),
     )
     client_id = Column(
@@ -27,7 +27,7 @@ class Event(Base):
         ForeignKey("clients.client_id", ondelete="SET NULL"),
     )
     support_id = Column(
-        "sales_id", Integer, ForeignKey("users.user_id", ondelete="SET NULL")
+        "support_id", Integer, ForeignKey("users.user_id", ondelete="SET NULL")
     )
     start_date = Column("start_date", DateTime)
     end_date = Column("end_date", DateTime)
