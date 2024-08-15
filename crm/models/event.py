@@ -5,7 +5,7 @@ from sqlalchemy import (
     Integer,
     DateTime,
 )
-from crm.database import Base
+from crm.models import Base
 from sqlalchemy.orm import relationship
 from crm.models.contract import Contract
 
@@ -36,8 +36,8 @@ class Event(Base):
     notes = Column("notes", String(255))
 
     contract = relationship("Contract", back_populates="events")
-    support = relationship("User", back_populates="events")
-    client = relationship("Client", back_populates="events")
+    # user = relationship("User", back_populates="events")
+    client = relationship("Client")
 
     def __init__(
         self,
@@ -75,8 +75,3 @@ class Event(Base):
 
     def __repr__(self):
         return f"Event: event from {self.client_id}. User in charge: {self.support_id}"
-
-
-Contract.events = relationship(
-    "Event", order_by=Event.event_id, back_populates="contract"
-)

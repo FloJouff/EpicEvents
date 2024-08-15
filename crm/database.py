@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
 import os
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
+from crm.models import *
+
 
 load_dotenv()
 
@@ -14,16 +15,9 @@ db_url = f"mysql+mysqlconnector://{os.getenv("DB_USER")}:{
 engine = create_engine(db_url, echo=True)
 
 Session = sessionmaker(bind=engine)
-Base = declarative_base()
 
 
 def init_db():
-    from crm.models.client import Client
-    from crm.models.contract import Contract
-    from crm.models.event import Event
-    from crm.models.user import User
-    from crm.models.role import Role
-
     Base.metadata.create_all(engine)
 
 

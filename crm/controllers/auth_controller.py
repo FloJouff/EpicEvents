@@ -1,23 +1,23 @@
 import jwt
 import datetime
 from crm.database import Session
-from crm.models.user import User
-from crm.models.role import Role
+from crm.models import User
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 import os
 
 # Utiliser un secret sécurisé pour les JWT
 JWT_SECRET = os.getenv("JWT_SECRET", "defaultsecret")
-JWT_ALGORITHM = "HS256"
+JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
 JWT_EXP_DELTA_SECONDS = 3600  # token expire after 1h
+
 
 # Initialiser l'outil de hachage des mots de passe
 ph = PasswordHasher()
 
 
 def authenticate(email, password):
-    """User authentication and return token if user is authentified"""
+    """User authentication and return token if user is authenticated"""
     session = Session()
     user = session.query(User).filter_by(email=email).first()
 
@@ -27,14 +27,14 @@ def authenticate(email, password):
             payload = {
                 "user_id": user.user_id,
                 "role": user.role_id,
-                "exp": datetime.datetime.utcnow()
+                "exp": datetime.datetime.now()
                 + datetime.timedelta(seconds=JWT_EXP_DELTA_SECONDS),
             }
             token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
-            return token
+            return token, user.role_id
         except VerifyMismatchError:
-            return None
-    return None
+            return None, None
+    return None, None
 
 
 def authorize(token, required_role=None):
@@ -52,29 +52,24 @@ def authorize(token, required_role=None):
         return False
 
 
-def register_user(username, password):
-    session = Session()
+def refresh_token(token):
     try:
-        # Vérification si l'utilisateur existe déjà
-        existing_user = (
-            session.query(User).filter_by(username=username).first()
+        payload = jwt.decode(
+            token,
+            JWT_SECRET,
+            algorithms=[JWT_ALGORITHM],
+            options={"verifiy_exp": False},
         )
-        if existing_user:
-            print("Cet utilisateur existe déjà.")
-            return False
+        exp_timestamp = payload["exp"]
+        exp_timestamp = datetime.datetime.fromtimestamp(exp_timestamp)
 
-        # Hachage du mot de passe avec Argon2
-        password_hash = ph.hash(password)
-
-        # Création d'un nouvel utilisateur
-        new_user = User(username=username, password_hash=password_hash)
-        session.add(new_user)
-        session.commit()
-        print("Utilisateur enregistré avec succès.")
-        return True
-    except Exception as e:
-        print(f"Erreur lors de l'enregistrement : {e}")
-        session.rollback()
-        return False
-    finally:
-        session.close()
+        if datetime.datetime.now() > exp_timestamp:
+            return None
+        payload["exp"] = datetime.datetime.now() + datetime.timedelta(
+            seconds=JWT_EXP_DELTA_SECONDS
+        )
+        new_token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
+        return new_token
+    except jwt.InvalidTokenError:
+        print("Invalid token")
+        return None

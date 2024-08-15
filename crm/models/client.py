@@ -5,7 +5,7 @@ from sqlalchemy import (
     Integer,
     Date,
 )
-from crm.database import Base
+from crm.models import Base
 from sqlalchemy.orm import relationship
 
 
@@ -16,7 +16,7 @@ class Client(Base):
         "client_id", Integer, primary_key=True, autoincrement=True
     )
     name = Column("name", String(65))
-    firstname = Column("fisrtname", String(65))
+    firstname = Column("firstname", String(65))
     email = Column("email", String(255), unique=True)
     phone = Column("phone", String(255))
     company = Column("company", String(65))

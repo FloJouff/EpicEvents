@@ -7,7 +7,7 @@ from sqlalchemy import (
     Boolean,
     String,
 )
-from crm.database import Base
+from crm.models import Base
 from sqlalchemy.orm import relationship
 from crm.models.client import Client
 
@@ -76,6 +76,6 @@ class Contract(Base):
         return f"Contract: {self.id} from {self.client_id}. User in charge: {self.commercial_id}"
 
 
-Client.contracts = relationship(
-    "Contract", order_by=Contract.contract_id, back_populates="client"
-)
+# Client.contracts = relationship(
+#     "Contract", order_by=Contract.contract_id, back_populates="client"
+# )

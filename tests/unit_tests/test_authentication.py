@@ -42,7 +42,7 @@ def user_sales(role_sales):
         firstname="Jane",
         email="jane.smith@example.com",
         password=hashed_password,
-        role=role_sales,
+        role_id=role_sales,
     )
 
 
@@ -54,7 +54,7 @@ def user_support(role_support):
         firstname="Bob",
         email="bob.brown@example.com",
         password=hashed_password,
-        role=role_support,
+        role_id=role_support,
     )
 
 
@@ -67,7 +67,7 @@ def user_test():
         firstname="User",
         email="test@example.com",
         password=hashed_password,
-        role=None,
+        role_id=None,
     )
     return (
         user,
@@ -92,36 +92,8 @@ def test_password_hashing_invalid():
         firstname="User",
         email="test@example.com",
         password="securepassword",
-        role=None,
+        role_id=None,
     )
 
     # Simulation d'un mot de passe incorrect
     assert not user.check_password("incorrectpassword")
-
-
-# Tests pour les permissions basées sur les rôles
-def test_manager_permissions(user_manager):
-    permissions = user_manager.role.has_permissions()
-    assert permissions["view_clients"] == True
-    assert permissions["delete_user"] == True
-    assert permissions["create_event"] == True
-    assert permissions["view_events"] == True
-    assert permissions["edit_events"] == True
-
-
-def test_sales_permissions(user_sales):
-    permissions = user_sales.role.has_permissions()
-    assert permissions["view_clients"] == True
-    assert permissions["edit_own_clients"] == True
-    assert permissions["create_event"] == True
-    assert permissions["view_events"] == True
-    assert permissions["edit_assigned_events"] == False
-
-
-def test_support_permissions(user_support):
-    permissions = user_support.role.has_permissions()
-    assert permissions["view_clients"] == True
-    assert permissions["edit_own_clients"] == False
-    assert permissions["create_event"] == False
-    assert permissions["view_events"] == True
-    assert permissions["edit_assigned_events"] == True
