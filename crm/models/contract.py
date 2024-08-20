@@ -9,7 +9,6 @@ from sqlalchemy import (
 )
 from crm.models import Base
 from sqlalchemy.orm import relationship
-from crm.models.client import Client
 
 
 def generate_uuid():
@@ -73,7 +72,9 @@ class Contract(Base):
         self.contract_status = contract_status
 
     def __repr__(self):
-        return f"Contract: {self.id} from {self.client_id}. User in charge: {self.commercial_id}"
+        return f"Contract: {self.id} from {
+            self.client_id}. User in charge: {
+                self.commercial_id}"
 
 
 # Client.contracts = relationship(

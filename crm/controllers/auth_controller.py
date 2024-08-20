@@ -6,13 +6,12 @@ from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
 import os
 
-# Utiliser un secret sécurisé pour les JWT
+
 JWT_SECRET = os.getenv("JWT_SECRET", "defaultsecret")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
 JWT_EXP_DELTA_SECONDS = 3600  # token expire after 1h
 
 
-# Initialiser l'outil de hachage des mots de passe
 ph = PasswordHasher()
 
 
@@ -31,7 +30,9 @@ def authenticate(email, password):
                 + datetime.timedelta(seconds=JWT_EXP_DELTA_SECONDS),
             }
             token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
+            print(f"Bienvenue {user.name} {user.firstname}")
             return token, user.role_id
+
         except VerifyMismatchError:
             return None, None
     return None, None

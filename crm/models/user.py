@@ -1,10 +1,9 @@
 from sqlalchemy import ForeignKey, Column, String, Integer
 from crm.models import Base
 from sqlalchemy.orm import relationship
-#from passlib.context import CryptContext
+
 from argon2 import PasswordHasher, exceptions
 
-#pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 ph = PasswordHasher()
 
 
@@ -56,7 +55,7 @@ class User(Base):
             return False
 
     def __repr__(self):
-        return f"User: name: {
+        return f"User: id: {self.user_id}, name: {
             self.name}, firstname: {
                 self.firstname}, email: {
                     self.email}, role: {self.role_id}"
