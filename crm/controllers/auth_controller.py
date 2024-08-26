@@ -52,25 +52,3 @@ def authorize(token, required_role=None):
         print("Invalide token.")
         return False
 
-
-def refresh_token(token):
-    try:
-        payload = jwt.decode(
-            token,
-            JWT_SECRET,
-            algorithms=[JWT_ALGORITHM],
-            options={"verifiy_exp": False},
-        )
-        exp_timestamp = payload["exp"]
-        exp_timestamp = datetime.datetime.fromtimestamp(exp_timestamp)
-
-        if datetime.datetime.now() > exp_timestamp:
-            return None
-        payload["exp"] = datetime.datetime.now() + datetime.timedelta(
-            seconds=JWT_EXP_DELTA_SECONDS
-        )
-        new_token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
-        return new_token
-    except jwt.InvalidTokenError:
-        print("Invalid token")
-        return None

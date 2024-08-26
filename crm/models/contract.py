@@ -46,8 +46,8 @@ class Contract(Base):
         total_amount,
         remain_amount,
         creation_date,
-        contract_status,
-        # contract_id=uuid,
+        is_signed,
+        contract_id=uuid,
     ):
         """Contract constructor
 
@@ -63,16 +63,16 @@ class Contract(Base):
             contact_name (str): name of teamuser in charge of this client
 
         """
-        # self.contract_id = contract_id
+        self.contract_id = contract_id
         self.client_id = client_id
         self.commercial_id = commercial_id
         self.total_amount = total_amount
         self.remain_amount = remain_amount
         self.creation_date = creation_date
-        self.contract_status = contract_status
+        self.is_signed = is_signed
 
     def __repr__(self):
-        return f"Contract: {self.id} from {
+        return f"Contract: {self.contract_id} from client{
             self.client_id}. User in charge: {
                 self.commercial_id}"
 

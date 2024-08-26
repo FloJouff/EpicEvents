@@ -43,12 +43,12 @@ class Event(Base):
         self,
         contract_id,
         client_id,
-        support_id,
         start_date,
         end_date,
         location,
         attendees,
-        notes,
+        notes=None,
+        support_id=None,
     ):
         """Event constructor
 
@@ -74,4 +74,4 @@ class Event(Base):
         self.notes = notes
 
     def __repr__(self):
-        return f"Event: event from {self.client_id}. User in charge: {self.support_id}"
+        return f"Event: event_id {self.event_id} from client :(id){self.client_id}. Uspport in charge: (id){self.support_id}"

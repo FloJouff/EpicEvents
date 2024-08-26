@@ -45,7 +45,7 @@ class Client(Base):
             name (str): client's name
             first_name (str): client's first_name
             email (str): client's email
-            phone (int): client's date_of_birth
+            phone (str): client's date_of_birth
             company (str): client's company
             creation_date (date): first contact_date with client
             last_contact_date (date): date of last update
@@ -62,4 +62,4 @@ class Client(Base):
         self.contact_id = contact_id
 
     def __repr__(self):
-        return f"Client: {self.name} {self.firstname} from {self.company}"
+        return f"Client: \n - {self.name} {self.firstname} from {self.company} (company name).\n -     Contact_id : {self.contact_id}. \n -     Email: {self.email}"

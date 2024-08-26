@@ -6,7 +6,6 @@ class AdminClientView:
     def show_admin_client_menu():
         print("\n--- Admin Client Menu ---")
         print(f"{constante.ADMIN_VIEW_CLIENT}. View clients list")
-        print(f"{constante.ADMIN_CREATE_CLIENT}. Create a new client")
         print(f"{constante.ADMIN_UPDATE_CLIENT}. Update client's data")
         print(f"{constante.ADMIN_DELETE_CLIENT}. Delete a client")
         print("0. Back")
@@ -36,6 +35,15 @@ class SalesClientView:
         print("0. Back")
         return input("Select an option : ")
 
+    @staticmethod
+    def get_new_client_info():
+        name = input("Name : ")
+        firstname = input("Firstname : ")
+        email = input("Email : ")
+        phone = input("Phone : (+33)")
+        company = input("Client's company : ")
+        return name, firstname, email, phone, company
+
     def update_client_menu():
         print("\n--- Update Client Menu ---")
         print(f"{constante.CLIENT_UPDATE_EMAIL}. Update email")
@@ -58,10 +66,57 @@ class SupportClientView:
         return input("Select an option : ")
 
 
-def get_new_client_info():
-    name = input("Name : ")
-    firstname = input("Firstname : ")
-    email = input("Email : ")
-    phone = input("Phone : ")
-    company = input("Client's company) : ")
-    return name, firstname, email, phone, company
+# def get_new_client_info():
+#     name = input("Name : ")
+#     firstname = input("Firstname : ")
+#     email = input("Email : ")
+#     phone = input("Phone : ")
+#     company = input("Client's company) : ")
+#     return name, firstname, email, phone, company
+
+
+class ClientView:
+    @staticmethod
+    def show_update_client_menu():
+        print("\n--- Update User Profile ---")
+        print(f"{constante.CLIENT_UPDATE_NAME}. Update Name")
+        print(f"{constante.CLIENT_UPDATE_FIRSTNAME}. Update Firstname")
+        print(f"{constante.CLIENT_UPDATE_EMAIL}. Update Email")
+        print(f"{constante.CLIENT_UPDATE_PHONE}. Update Phone")
+        print(f"{constante.CLIENT_UPDATE_COMPANY}. Update Company")
+        print(f"{constante.CLIENT_UPDATE_LAST_CONTACT}. Update last contact date")
+        print("0. Back to Main Menu")
+        return input("Select an option : ")
+
+    @staticmethod
+    def get_new_client_name():
+        return input("Enter new name: ")
+
+    @staticmethod
+    def get_new_client_firstname():
+        return input("Enter new firstname: ")
+
+    @staticmethod
+    def get_new_client_email():
+        return input("Enter new email: ")
+
+    @staticmethod
+    def get_new_client_phone():
+        return input("Enter new phone: ")
+
+    @staticmethod
+    def get_new_client_company():
+        return input("Enter new company: ")
+
+    @staticmethod
+    def get_new_client_last_contact():
+        return input("Enter date of last contact: ")
+
+    @staticmethod
+    def get_new_client_contact_id():
+        return input("Enter new contact_ID for this client: ")
+
+    @staticmethod
+    def get_client_id_for_deletion():
+        client_id = input("Enter the Client ID to delete: ")
+        return int(client_id)

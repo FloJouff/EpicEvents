@@ -8,7 +8,7 @@ class AdminView:
         print("\n--- Admin Main Menu ---")
         print(f"{constante.ADMIN_VIEW_USERS}. View all users")
         print(f"{constante.ADMIN_CREATE_USER}. Create new user")
-        print(f"{constante.ADMIN_UPDATE_USERS}. Update user")
+        print(f"{constante.ADMIN_UPDATE_USER}. Update user")
         print(f"{constante.ADMIN_DELETE_USER}. Delete user")
         print(f"{constante.ADMIN_CLIENTS_MENU}. Clients Menu")
         print(f"{constante.ADMIN_CONTRACTS_MENU}. Contracts Menu")
@@ -22,7 +22,7 @@ class AdminView:
         firstname = input("Firstname : ")
         email = input("Email : ")
         password = getpass.getpass("Password : ")
-        role = input("User's role (management/sales/support/admin) : ")
+        role = input("User's role (1:management/2:sales/3:support/4:admin) : ")
         role_id = int(role)
         return name, firstname, email, password, role_id
 
@@ -45,12 +45,12 @@ class ManagementView:
         return input("Select an option : ")
 
     @staticmethod
-    def show_user_menu():
+    def show_management_user_menu():
         print("\n--- Users Menu ---")
-        print(f"{constante.VIEW_USER_LIST}. View users list")
-        print(f"{constante.CREATE_USER}. Create new user")
-        print(f"{constante.UPDATE_USER}. Update users")
-        print(f"{constante.DELETE_USER}. Delete users")
+        print(f"{constante.MANAGEMENT_VIEW_USERS}. View users list")
+        print(f"{constante.MANAGEMENT_CREATE_USER}. Create new user")
+        print(f"{constante.MANAGEMENT_UPDATE_USER}. Update users")
+        print(f"{constante.MANAGEMENT_DELETE_USER}. Delete users")
         print("0. Logout")
         return input("Select an option : ")
 

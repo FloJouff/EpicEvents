@@ -6,6 +6,7 @@ class AdminEventView:
     def show_admin_event_menu():
         print("\n--- Admin Event Menu ---")
         print(f"{constante.ADMIN_VIEW_EVENT}. View events list")
+        print(f"{constante.ADMIN_CREATE_EVENT}. Create an event")
         print(f"{constante.ADMIN_UPDATE_EVENT}. Update an event ")
         print(f"{constante.ADMIN_DELETE_EVENT}. Delete an event ")
         print("0. Back")
@@ -14,7 +15,7 @@ class AdminEventView:
 
 class ManagementEventView:
     @staticmethod
-    def show_manager_event_menu():
+    def show_management_event_menu():
         print("\n--- Manager Event Menu ---")
         print(f"{constante.MANAGEMENT_VIEW_EVENT}. View events list")
         print(f"{constante.MANAGEMENT_VIEW_NO_SUPPORT}. View events with no support")
@@ -46,21 +47,60 @@ class SupportEventView:
         return input("Select an option : ")
 
 
-def update_event_menu():
-    print("\n--- Update Event ---")
-    print(f"{constante.EVENT_UPDATE_START_DATE}. Update start date")
-    print(f"{constante.EVENT_UPDATE_END_DATE}. Update end date")
-    print(f"{constante.EVENT_UPDATE_LOCATION}. Update location")
-    print(f"{constante.EVENT_UPDATE_ATTENDEES}. Update attendees")
-    print(f"{constante.EVENT_UPDATE_NOTES}. Update Notes")
-    print("0. Back")
-    return input("Select an option : ")
+class EventView:
+    @staticmethod
+    def show_update_event_menu():
+        print("\n--- Update Event ---")
+        print(f"{constante.EVENT_UPDATE_START_DATE}. Update start date (YYYY-MM-DD)")
+        print(f"{constante.EVENT_UPDATE_END_DATE}. Update end date (YYYY-MM-DD)")
+        print(f"{constante.EVENT_UPDATE_LOCATION}. Update location")
+        print(f"{constante.EVENT_UPDATE_ATTENDEES}. Update attendees")
+        print(f"{constante.EVENT_UPDATE_NOTES}. Update Notes")
+        print("0. Back")
+        return input("Select an option : ")
 
+    @staticmethod
+    def get_new_event_info():
+        client_id = input("Client's id : ")
+        contract_id = input("Contract's id : ")
+        start_date = input("Starting date (YYYY-MM-DD): ")
+        end_date = input("Ending date (YYYY-MM-DD): ")
+        location = input("Location : ")
+        attendees = input("Attendees : ")
+        return client_id, contract_id, start_date, end_date, location, attendees
 
-def get_new_event_info():
-    client_id = input("Client's id : ")
-    contract_id = input("Contract's id : ")
-    start_date = input("Starting date : ")
-    end_date = input("Ending date : ")
-    attendees = input("Attendees : ")
-    return client_id, contract_id, start_date, end_date, attendees
+    @staticmethod
+    def get_new_event_start_date():
+        return input("Enter new starting date (YYYY-MM-DD): ")
+
+    @staticmethod
+    def get_new_event_end_date():
+        return input("Enter new ending date (YYYY-MM-DD): ")
+
+    @staticmethod
+    def get_new_location():
+        return input("Enter new location: ")
+
+    @staticmethod
+    def get_new_attenddes():
+        return input("Enter new attendees: ")
+
+    @staticmethod
+    def get_new_event_notes():
+        return input("Enter your notes: ")
+
+    @staticmethod
+    def get_new_support_id():
+        support_id = input("Enter the Support ID for this event: ")
+        return int(support_id)
+
+    @staticmethod
+    def get_event_id_for_deletion():
+        event_id = input("Enter the event ID to delete: ")
+        return int(event_id)
+
+    @staticmethod
+    def get_no_support_event_info():
+        event_id = input("Event's id : ")
+        support_id = input("User_id you want to afffect to this event : ")
+        return event_id, support_id

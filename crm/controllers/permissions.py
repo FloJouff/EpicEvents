@@ -1,5 +1,5 @@
 from functools import wraps
-from Constantes.permissions import PERMISSIONS
+from Constantes.permissions import PERMISSIONS, Role
 
 
 def requires_permission(task):
@@ -11,12 +11,22 @@ def requires_permission(task):
             elif args:
                 current_user_role_id = args[0]
             else:
-                print("Role ID not provided. Permission denied.")
+                print("Role ID not provided. Permission denied")
+                return None
+
+            if not current_user_role_id:
+                print("Role ID not provided or invalid. Permission denied.")
+                return None
+
+            try:
+                current_user_role = Role(str(current_user_role_id))
+            except ValueError:
+                print(f"Invalide role ID: {current_user_role_id}. Permission denied")
                 return None
 
             allowed_roles = PERMISSIONS.get(task, [])
 
-            if str(current_user_role_id) in allowed_roles:
+            if current_user_role in allowed_roles:
                 return func(*args, **kwargs)
             else:
                 print(

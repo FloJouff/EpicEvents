@@ -1,29 +1,11 @@
-# from crm.controllers.auth_controller import authenticate, authorize
 from crm.database import Session
 from crm.models import User
 from argon2 import PasswordHasher
 
-# from argon2.exceptions import VerifyMismatchError
+
 from crm.controllers.permissions import requires_permission
 
 ph = PasswordHasher()
-
-
-# class UserController:
-#     def login(self, email, password):
-#         token = authenticate(email, password)
-#         if token:
-#             # Retourner le token ou l'envoyer à la vue
-#             return token
-#         else:
-#             raise Exception("Authentication failed")
-
-#     def secure_action(self, token):
-#         if authorize(token, required_role="gestion"):
-#             # Effectue l'action sécurisée
-#             pass
-#         else:
-#             raise Exception("This user is not authorized to see this")
 
 
 @requires_permission("create_user")
@@ -67,6 +49,7 @@ def view_users():
         print(f"Users list : {user}")
 
 
+@requires_permission("update_user")
 def update_user(user_id, name=None, firstname=None, email=None, password=None):
     session = Session()
     try:
@@ -74,7 +57,6 @@ def update_user(user_id, name=None, firstname=None, email=None, password=None):
         if not user:
             print("User not found.")
             return False
-
         if name:
             user.name = name
         if firstname:
@@ -120,9 +102,9 @@ def change_password(user_id, old_password, new_password):
 
 
 def delete_user(user_id):
-    session = Session
+    session = Session()
     try:
-        user = session.query(User).fiter_by(user_id=user_id).first()
+        user = session.query(User).filter_by(user_id=user_id).first()
         if not user:
             print(f"User with id {user_id} not found")
             return False
