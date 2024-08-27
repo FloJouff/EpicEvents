@@ -66,6 +66,7 @@ def view_own_client(user_id):
 def update_client(
     user_id,
     client_id,
+    current_user_role_id,
     name=None,
     firstname=None,
     email=None,
@@ -125,7 +126,7 @@ def update_client_sales(user_id, client_id, contact_id, current_user_role_id):
 
 
 @requires_permission("delete_client")
-def delete_client(user_id, client_id):
+def delete_client(client_id, current_user_role_id):
     session = Session()
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
@@ -144,26 +145,33 @@ def delete_client(user_id, client_id):
         session.close()
 
 
-def update_client_menu(user_id, client_id):
+def update_client_menu(user_id, client_id, current_user_role_id):
     while True:
         update_choice = client_view.ClientView.show_update_client_menu()
         if update_choice == constante.CLIENT_UPDATE_NAME:
             new_name = client_view.ClientView.get_new_client_name()
-            update_client(user_id, client_id, name=new_name)
+            update_client(user_id, client_id, current_user_role_id, name=new_name)
         elif update_choice == constante.CLIENT_UPDATE_FIRSTNAME:
             new_firstname = client_view.ClientView.get_new_client_firstname()
-            update_client(user_id, client_id, firstname=new_firstname)
+            update_client(
+                user_id, client_id, current_user_role_id, firstname=new_firstname
+            )
         elif update_choice == constante.CLIENT_UPDATE_EMAIL:
             new_email = client_view.ClientView.get_new_client_email()
-            update_client(user_id, client_id, email=new_email)
+            update_client(user_id, client_id, current_user_role_id, email=new_email)
         elif update_choice == constante.CLIENT_UPDATE_PHONE:
             new_phone = client_view.ClientView.get_new_client_phone()
-            update_client(user_id, client_id, phone=new_phone)
+            update_client(user_id, client_id, current_user_role_id, phone=new_phone)
         elif update_choice == constante.CLIENT_UPDATE_COMPANY:
             new_company = client_view.ClientView.get_new_client_company()
-            update_client(user_id, client_id, company=new_company)
+            update_client(user_id, client_id, current_user_role_id, company=new_company)
         elif update_choice == constante.CLIENT_UPDATE_LAST_CONTACT:
             new_last_contact = client_view.ClientView.get_new_client_last_contact()
-            update_client(user_id, client_id, last_contact_date=new_last_contact)
+            update_client(
+                user_id,
+                client_id,
+                current_user_role_id,
+                last_contact_date=new_last_contact,
+            )
         elif update_choice == "0":
             break

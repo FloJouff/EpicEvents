@@ -1,61 +1,10 @@
 import pytest
 from crm.models.user import User
-from crm.models.role import Role
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
+from crm.controllers.auth_controller import authenticate
+from crm.controllers.permissions import requires_permission
 
 ph = PasswordHasher()
-
-
-@pytest.fixture
-def role_manager():
-    return Role(role_id=1, role="gestion")
-
-
-@pytest.fixture
-def role_sales():
-    return Role(role_id=2, role="commercial")
-
-
-@pytest.fixture
-def role_support():
-    return Role(role_id=3, role="support")
-
-
-@pytest.fixture
-def user_manager(role_manager):
-    hashed_password = ph.hash("manager_pass")
-    return User(
-        name="Doe",
-        firstname="John",
-        email="john.doe@example.com",
-        password=hashed_password,
-        role=role_manager,
-    )
-
-
-@pytest.fixture
-def user_sales(role_sales):
-    hashed_password = ph.hash("sales_pass")
-    return User(
-        name="Smith",
-        firstname="Jane",
-        email="jane.smith@example.com",
-        password=hashed_password,
-        role_id=role_sales,
-    )
-
-
-@pytest.fixture
-def user_support(role_support):
-    hashed_password = ph.hash("support_pass")
-    return User(
-        name="Brown",
-        firstname="Bob",
-        email="bob.brown@example.com",
-        password=hashed_password,
-        role_id=role_support,
-    )
 
 
 @pytest.fixture
@@ -72,7 +21,7 @@ def user_test():
     return (
         user,
         password,
-    )  # On retourne l'utilisateur et le mot de passe en clair pour les tests
+    )
 
 
 # Tests pour le hachage et la vérification des mots de passe
@@ -97,3 +46,73 @@ def test_password_hashing_invalid():
 
     # Simulation d'un mot de passe incorrect
     assert not user.check_password("incorrectpassword")
+
+
+# Mock for database
+@pytest.fixture
+def mock_session(mocker):
+    return mocker.Mock()
+
+
+# Mock for user
+@pytest.fixture
+def mock_user():
+    user = User(
+        name="test",
+        firstname="test",
+        email="test@example.com",
+        password=PasswordHasher().hash("password123"),
+        role_id=2,
+    )
+    return user
+
+
+def test_authenticate_success(mocker, mock_session, mock_user):
+    mocker.patch("crm.controllers.auth_controller.Session", return_value=mock_session)
+    mock_session.query.return_value.filter_by.return_value.first.return_value = mock_user
+
+    token, role_id = authenticate("test@example.com", "password123")
+
+    assert token is not None
+    assert role_id == 2
+
+
+def test_authenticate_failure(mocker, mock_session):
+    mocker.patch("crm.controllers.auth_controller.Session", return_value=mock_session)
+    mock_session.query.return_value.filter_by.return_value.first.return_value = None
+
+    token, role_id = authenticate("wrong@example.com", "wrongpassword")
+
+    assert token is None
+    assert role_id is None
+
+
+# def test_requires_permission_allowed(mocker):
+#     mocker.patch("Constantes.permissions.PERMISSIONS", {"create_user": ["2", "4"]})
+
+#     @requires_permission("create_user")
+#     def dummy_function(current_user_role_id):
+#         return "Function executed"
+
+#     result = dummy_function(current_user_role_id=2)
+#     assert result == "Function executed"
+
+
+def test_requires_permission_denied(mocker):
+    @requires_permission("create_user")
+    def dummy_function(current_user_role_id):
+        return "Function executed"
+
+    mocker.patch("crm.controllers.permissions.PERMISSIONS", {"create_user": ["2", "4"]})
+
+    result = dummy_function(current_user_role_id=1)
+    assert result is None
+
+
+def test_requires_permission_no_role_id():
+    @requires_permission("create_user")
+    def dummy_function():
+        return "Function executed"
+
+    result = dummy_function()
+    assert result is None

@@ -36,7 +36,6 @@ class SalesController:
     def sales_client_menu(user_id, role_id):
         while True:
             sales_client_choice = SalesClientView.show_sales_client_menu()
-            print("user_id : ", user_id)
             if sales_client_choice == constante.SALES_VIEW_CLIENT:
                 client_controller.view_client()
             elif sales_client_choice == constante.SALES_CREATE_CLIENT:

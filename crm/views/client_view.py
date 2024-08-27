@@ -1,4 +1,5 @@
 import Constantes.constantes as constante
+from validators import validate_email, validate_phone_number
 
 
 class AdminClientView:
@@ -39,8 +40,14 @@ class SalesClientView:
     def get_new_client_info():
         name = input("Name : ")
         firstname = input("Firstname : ")
-        email = input("Email : ")
-        phone = input("Phone : (+33)")
+        while True:
+            email = input("Email : ")
+            if validate_email(email):
+                break
+        while True:
+            phone = input("Phone : (+33)")
+            if validate_phone_number(phone):
+                break
         company = input("Client's company : ")
         return name, firstname, email, phone, company
 
@@ -64,15 +71,6 @@ class SupportClientView:
         print(f"{constante.SUPPORT_VIEW_CLIENT}. View clients list")
         print("0. Back")
         return input("Select an option : ")
-
-
-# def get_new_client_info():
-#     name = input("Name : ")
-#     firstname = input("Firstname : ")
-#     email = input("Email : ")
-#     phone = input("Phone : ")
-#     company = input("Client's company) : ")
-#     return name, firstname, email, phone, company
 
 
 class ClientView:

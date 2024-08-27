@@ -55,6 +55,7 @@ def create_event(
         session.close()
 
 
+@requires_permission("update_event")
 def update_event(
     user_id,
     event_id,
@@ -92,6 +93,7 @@ def update_event(
         session.close()
 
 
+@requires_permission("delete_event")
 def delete_event(user_id, event_id):
     session = Session()
     try:

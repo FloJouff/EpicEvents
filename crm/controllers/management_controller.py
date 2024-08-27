@@ -20,6 +20,7 @@ from crm.controllers.event_controller import (
     view_no_support_event,
     update_no_support_event,
 )
+from validators import validate_password, validate_email
 
 
 class ManagementController:

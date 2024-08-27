@@ -1,4 +1,5 @@
 import Constantes.constantes as constante
+from validators import validate_date
 
 
 class AdminEventView:
@@ -63,8 +64,14 @@ class EventView:
     def get_new_event_info():
         client_id = input("Client's id : ")
         contract_id = input("Contract's id : ")
-        start_date = input("Starting date (YYYY-MM-DD): ")
-        end_date = input("Ending date (YYYY-MM-DD): ")
+        while True:
+            start_date = input("Starting date (YYYY-MM-DD): ")
+            if validate_date(start_date):
+                break
+        while True:
+            end_date = input("Ending date (YYYY-MM-DD): ")
+            if validate_date(end_date):
+                break
         location = input("Location : ")
         attendees = input("Attendees : ")
         return client_id, contract_id, start_date, end_date, location, attendees

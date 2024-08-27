@@ -17,7 +17,6 @@ from crm.controllers.contracts_controller import (
     view_contract,
     create_contract,
     update_contract_menu,
-    delete_contract,
 )
 from crm.controllers.event_controller import (
     view_event,
@@ -49,7 +48,7 @@ class AdminController:
                 else:
                     print("Failed to delete user. Please try again.")
             elif choice == constante.ADMIN_CLIENTS_MENU:
-                AdminController.admin_client_menu(user_id)
+                AdminController.admin_client_menu(user_id, role_id)
             elif choice == constante.ADMIN_CONTRACTS_MENU:
                 AdminController.admin_contract_menu(user_id, role_id)
             elif choice == constante.ADMIN_EVENTS_MENU:
@@ -77,17 +76,21 @@ class AdminController:
                 break
 
     @staticmethod
-    def admin_client_menu(user_id):
+    def admin_client_menu(user_id, role_id):
         while True:
             adm_client_choice = AdminClientView.show_admin_client_menu()
             if adm_client_choice == constante.ADMIN_VIEW_CLIENT:
                 client_controller.view_client()
             elif adm_client_choice == constante.ADMIN_UPDATE_CLIENT:
                 client_id = input("Client_id needing an update : ")
-                client_controller.update_client_menu(user_id, client_id)
+                client_controller.update_client_menu(
+                    user_id, client_id, current_user_role_id=role_id
+                )
             elif adm_client_choice == constante.ADMIN_DELETE_CLIENT:
                 client_id_to_delete = ClientView.get_client_id_for_deletion()
-                success = client_controller.delete_client(client_id_to_delete)
+                success = client_controller.delete_client(
+                    client_id_to_delete, current_user_role_id=role_id
+                )
                 if success:
                     print("Client deleted successfully.")
                 else:
@@ -106,14 +109,16 @@ class AdminController:
                 create_contract(*result, current_user_role_id=role_id)
             elif adm_contract_choice == constante.ADMIN_UPDATE_CONTRACT:
                 contract_id = input("Contract_id needing an update : ")
-                update_contract_menu(user_id, contract_id)
-            elif adm_contract_choice == constante.ADMIN_DELETE_CONTRACT:
-                contract_id_to_delete = ContractView.get_contract_id_for_deletion()
-                success = delete_contract(contract_id_to_delete)
-                if success:
-                    print("Contract deleted successfully.")
-                else:
-                    print("Failed to delete Contract. Please try again.")
+                update_contract_menu(user_id, contract_id, current_user_role_id=role_id)
+            # elif adm_contract_choice == constante.ADMIN_DELETE_CONTRACT:
+            #     contract_id_to_delete = ContractView.get_contract_id_for_deletion()
+            #     success = delete_contract(
+            #         user_id, contract_id_to_delete, current_user_role_id=role_id
+            #     )
+            #     if success:
+            #         print("Contract deleted successfully.")
+            #     else:
+            #         print("Failed to delete Contract. Please try again.")
             elif adm_contract_choice == "0":
                 break
 

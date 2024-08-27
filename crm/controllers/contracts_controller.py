@@ -65,6 +65,7 @@ def create_contract(
 def update_contract(
     user_id,
     contract_id,
+    current_user_role_id,
     client_id=None,
     commercial_id=None,
     remain_amount=None,
@@ -139,23 +140,24 @@ def update_own_contract(
         session.close()
 
 
-def delete_contract(user_id, contract_id):
-    session = Session()
-    try:
-        contract = session.query(Contract).filter_by(contract_id=contract_id).first()
-        if not contract:
-            print(f"User with id {contract_id} not found")
-            return False
-        session.delete(contract)
-        session.commit()
-        print(f"Contract with ID {contract_id} has been deleted successfully")
-        return True
-    except Exception as e:
-        print(f"Error deleting contract: {e}")
-        session.rollback()
-        return False
-    finally:
-        session.close()
+# @requires_permission("delete_contract")
+# def delete_contract(user_id, contract_id, current_user_role_id):
+#     session = Session()
+#     try:
+#         contract = session.query(Contract).filter_by(contract_id=contract_id).first()
+#         if not contract:
+#             print(f"User with id {contract_id} not found")
+#             return False
+#         session.delete(contract)
+#         session.commit()
+#         print(f"Contract with ID {contract_id} has been deleted successfully")
+#         return True
+#     except Exception as e:
+#         print(f"Error deleting contract: {e}")
+#         session.rollback()
+#         return False
+#     finally:
+#         session.close()
 
 
 def view_unsigned_contract():
@@ -174,22 +176,34 @@ def view_unpaid_contract():
         print(f"List of unsolded contracts : {contract}")
 
 
-def update_contract_menu(user_id, contract_id):
+@requires_permission("update_contract")
+def update_contract_menu(user_id, contract_id, current_user_role_id):
     while True:
         update_contract_choice = contract_view.ContractView.show_update_contract_menu()
         if update_contract_choice == constante.CONTRACT_UPDATE_CLIENT:
             new_client = contract_view.ContractView.get_new_contract_client_id()
-            update_contract(user_id, contract_id, client_id=new_client)
+            update_contract(
+                user_id, contract_id, current_user_role_id, client_id=new_client
+            )
         elif update_contract_choice == constante.CONTRACT_UPDATE_SALES:
             new_sales_id = contract_view.ContractView.get_new_contract_contact_id()
-            update_contract(user_id, contract_id, commercial_id=new_sales_id)
+            update_contract(
+                user_id, contract_id, current_user_role_id, commercial_id=new_sales_id
+            )
         elif update_contract_choice == constante.CONTRACT_UPDATE_STATUS:
             new_status = contract_view.ContractView.get_new_status()
             if new_status == "Y" or "y":
-                update_contract(user_id, contract_id, is_signed=True)
+                update_contract(
+                    user_id, contract_id, current_user_role_id, is_signed=True
+                )
         elif update_contract_choice == constante.CONTRACT_UPDATE_REMAIN:
             new_total_remain = contract_view.ContractView.get_new_contract_remain_cost()
-            update_contract(user_id, contract_id, remain_amount=new_total_remain)
+            update_contract(
+                user_id,
+                contract_id,
+                current_user_role_id,
+                remain_amount=new_total_remain,
+            )
         elif update_contract_choice == "0":
             break
 

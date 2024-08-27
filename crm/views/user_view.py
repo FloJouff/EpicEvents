@@ -1,5 +1,6 @@
 import getpass
 import Constantes.constantes as constante
+from validators import validate_password, validate_email
 
 
 class AdminView:
@@ -20,9 +21,17 @@ class AdminView:
     def get_new_user_info():
         name = input("Name : ")
         firstname = input("Firstname : ")
-        email = input("Email : ")
-        password = getpass.getpass("Password : ")
-        role = input("User's role (1:management/2:sales/3:support/4:admin) : ")
+        while True:
+            email = input("Email : ")
+            if validate_email(email):
+                break
+        while True:
+            password = getpass.getpass(
+                "Password (Your password must contain 8 characters): "
+            )
+            if validate_password(email):
+                break
+        role = input("User's role ( 1:management \n 2:sales \n 3:support \n 4:admin) : ")
         role_id = int(role)
         return name, firstname, email, password, role_id
 
@@ -104,11 +113,18 @@ class UserView:
 
     @staticmethod
     def get_new_password():
-        return getpass.getpass("Enter new password: ")
+        return getpass.getpass(
+            "Enter new password (Your password must contain 8 characters with at least one digit, one uppercase letter and one lowercase letter): "
+        )
 
     @staticmethod
     def change_password_menu():
         print("\n--- Change Password ---")
         old_password = getpass.getpass("Enter your current password: ")
-        new_password = getpass.getpass("Enter your new password: ")
+        while True:
+            new_password = getpass.getpass(
+                "Enter your new password (Your password must contain 8 characters): "
+            )
+            if validate_password(new_password):
+                break
         return old_password, new_password
