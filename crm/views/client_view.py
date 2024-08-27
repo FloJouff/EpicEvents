@@ -118,3 +118,8 @@ class ClientView:
     def get_client_id_for_deletion():
         client_id = input("Enter the Client ID to delete: ")
         return int(client_id)
+
+    @staticmethod
+    def display_client_list(client_list):
+        for client in client_list:
+            print("Client List: ", client)

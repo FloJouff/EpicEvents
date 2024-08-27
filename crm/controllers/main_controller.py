@@ -1,6 +1,5 @@
 import jwt
-from crm.controllers.auth_controller import authenticate
-from crm.controllers import auth_controller
+from crm.models.user import User
 from crm.controllers.admin_controller import AdminController
 from crm.controllers.management_controller import ManagementController
 from crm.controllers.sales_controller import SalesController
@@ -8,6 +7,7 @@ from crm.controllers.support_controller import SupportController
 from crm.views.main_view import MainView
 import os
 import Constantes.constantes as constante
+from Constantes.permissions import Role
 from datetime import datetime, timedelta
 
 JWT_SECRET = os.getenv("JWT_SECRET", "defaultsecret")
@@ -47,12 +47,9 @@ class MainController:
 
     def login(self):
         email, password = self.view.get_login_credentials()
-        self.token, self.role_id = authenticate(email, password)
-        print(self.role_id)
+        self.token, self.role_id = User.authenticate(email, password)
         if self.token:
-            decoded_token = jwt.decode(
-                self.token, JWT_SECRET, algorithms=[JWT_ALGORITHM]
-            )
+            decoded_token = User.decode_token(self)
             self.user_id = decoded_token["user_id"]
             self.token_expiry = datetime.fromtimestamp(decoded_token["exp"])
             self.view.show_login_success()
@@ -61,13 +58,13 @@ class MainController:
             self.view.show_login_failure()
 
     def handle_role_specific_actions(self):
-        if self.role_id == 4:
+        if self.role_id == int(Role.ADMIN.value):
             AdminController.handle_admin_menu(self.user_id, self.role_id)
-        elif self.role_id == 1:
+        elif self.role_id == int(Role.GESTION.value):
             ManagementController.handle_management_menu(self.user_id, self.role_id)
-        elif self.role_id == 2:
+        elif self.role_id == int(Role.COMMERCIAL.value):
             SalesController.handle_sales_menu(self.user_id, self.role_id)
-        elif self.role_id == 3:
+        elif self.role_id == int(Role.SUPPORT.value):
             SupportController.handle_support_menu(self.user_id, self.role_id)
 
     def handle_disconnection(self):

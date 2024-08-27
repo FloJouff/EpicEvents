@@ -3,7 +3,7 @@ from crm.controllers.user_controller import change_password
 import Constantes.constantes as constante
 from crm.views.client_view import SupportClientView
 from crm.views.contract_view import SupportContractView
-from crm.views.event_view import SupportEventView
+from crm.views.event_view import SupportEventView, EventView
 
 from crm.controllers.client_controller import (
     view_client,
@@ -34,9 +34,9 @@ class SupportController:
             elif choice == constante.SUPPORT_CLIENTS_MENU:
                 SupportController.support_client_menu(user_id, role_id)
             elif choice == constante.SUPPORT_CONTRACTS_MENU:
-                SupportController.support_contract_menu()
+                SupportController.support_contract_menu(user_id, role_id)
             elif choice == constante.SUPPORT_EVENTS_MENU:
-                SupportController.support_event_menu()
+                SupportController.support_event_menu(user_id, role_id)
             elif choice == "0":
                 break
 
@@ -65,9 +65,9 @@ class SupportController:
             if support_event_choice == constante.SUPPORT_VIEW_EVENT:
                 view_event()
             elif support_event_choice == constante.SUPPORT_VIEW_OWN_EVENT:
-                view_user_own_event(user_id, role_id)
+                view_user_own_event(user_id)
             elif support_event_choice == constante.SUPPORT_UPDATE_EVENT:
-                event_id = input("Event_id you need to update : ")
+                event_id = EventView.get_event_id()
                 update_event(user_id, event_id)
             elif support_event_choice == "0":
                 break

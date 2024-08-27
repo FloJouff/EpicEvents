@@ -81,7 +81,7 @@ JWT_ALGORITHM =HS256
 To run the application:
 
 ```bash
-python3 main.py
+python main.py
 ```
 
 
@@ -90,7 +90,7 @@ python3 main.py
 To run the unit tests, use the following command:
 
 ```bash
-python3 pytest
+python pytest
 ```
 
 Ensure your MySQL database is set up correctly before running tests.

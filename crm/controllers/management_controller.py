@@ -116,7 +116,7 @@ class ManagementController:
                 create_contract(*result, current_user_role_id=role_id)
             elif manag_contract_choice == constante.MANAGEMENT_UPDATE_CONTRACT:
                 contract_id = input("Contract_id needing an update : ")
-                update_contract_menu(user_id, contract_id)
+                update_contract_menu(user_id, contract_id, role_id)
             elif manag_contract_choice == "0":
                 break
 

@@ -11,14 +11,14 @@ def view_event():
     session = Session()
     event_list = session.query(Event).all()
     for event in event_list:
-        print(f"Liste des évènements : {event}")
+        print(f"Events list : {event}")
 
 
 def view_user_own_event(user_id):
     session = Session()
     user_event_list = session.query(Event).filter_by(support_id=user_id).all()
     for event in user_event_list:
-        print(f"Liste des évènements : {event}")
+        print(f"Events list : {event}")
 
 
 @requires_permission("create_event")
@@ -59,6 +59,7 @@ def create_event(
 def update_event(
     user_id,
     event_id,
+    current_user_role_id,
     start_date=None,
     end_date=None,
     location=None,
@@ -94,7 +95,7 @@ def update_event(
 
 
 @requires_permission("delete_event")
-def delete_event(user_id, event_id):
+def delete_event(event_id, current_user_role_id):
     session = Session()
     try:
         event = session.query(Event).filter_by(event_id=event_id).first()
@@ -140,23 +141,27 @@ def update_no_support_event(user_id, event_id, support_id):
         session.close()
 
 
-def update_event_menu(user_id, event_id):
+def update_event_menu(user_id, event_id, current_user_role_id):
     while True:
         update_event_choice = event_view.EventView.show_update_event_menu()
         if update_event_choice == constante.EVENT_UPDATE_START_DATE:
             new_start_date = event_view.EventView.get_new_event_start_date()
-            update_event(user_id, event_id, start_date=new_start_date)
+            update_event(
+                user_id, event_id, current_user_role_id, start_date=new_start_date
+            )
         elif update_event_choice == constante.EVENT_UPDATE_END_DATE:
             new_end_date = event_view.EventView.get_new_event_end_date()
-            update_event(user_id, event_id, end_date=new_end_date)
+            update_event(user_id, event_id, current_user_role_id, end_date=new_end_date)
         elif update_event_choice == constante.EVENT_UPDATE_LOCATION:
             new_location = event_view.EventView.get_new_location()
-            update_event(user_id, event_id, location=new_location)
+            update_event(user_id, event_id, current_user_role_id, location=new_location)
         elif update_event_choice == constante.EVENT_UPDATE_ATTENDEES:
             new_attendees = event_view.EventView.get_new_attenddes()
-            update_event(user_id, event_id, attendees=new_attendees)
+            update_event(
+                user_id, event_id, current_user_role_id, attendees=new_attendees
+            )
         elif update_event_choice == constante.EVENT_UPDATE_NOTES:
             new_notes = event_view.EventView.get_new_event_notes()
-            update_event(user_id, event_id, notes=new_notes)
+            update_event(user_id, event_id, current_user_role_id, notes=new_notes)
         elif update_event_choice == "0":
             break

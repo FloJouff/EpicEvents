@@ -101,6 +101,7 @@ def update_contract(
 def update_own_contract(
     user_id,
     contract_id,
+    current_user_role_id,
     client_id=None,
     commercial_id=None,
     remain_amount=None,
@@ -208,20 +209,30 @@ def update_contract_menu(user_id, contract_id, current_user_role_id):
             break
 
 
-def update_own_contract_menu(user_id, contract_id):
+@requires_permission("update_own_contract")
+def update_own_contract_menu(user_id, contract_id, role_id):
     while True:
         update_contract_choice = (
             contract_view.SalesContractView.show_sales_update_contract_menu()
         )
         if update_contract_choice == constante.CONTRACT_UPDATE_CLIENT:
             new_client = contract_view.ContractView.get_new_contract_client_id()
-            update_own_contract(user_id, contract_id, client_id=new_client)
+            update_own_contract(
+                user_id, contract_id, current_user_role_id=role_id, client_id=new_client
+            )
         elif update_contract_choice == constante.CONTRACT_UPDATE_STATUS:
             new_status = contract_view.ContractView.get_new_status()
             if new_status == "Y" or "y":
-                update_own_contract(user_id, contract_id, is_signed=True)
+                update_own_contract(
+                    user_id, contract_id, current_user_role_id=role_id, is_signed=True
+                )
         elif update_contract_choice == constante.CONTRACT_UPDATE_REMAIN:
             new_total_remain = contract_view.ContractView.get_new_contract_remain_cost()
-            update_own_contract(user_id, contract_id, remain_amount=new_total_remain)
+            update_own_contract(
+                user_id,
+                contract_id,
+                current_user_role_id=role_id,
+                remain_amount=new_total_remain,
+            )
         elif update_contract_choice == "0":
             break

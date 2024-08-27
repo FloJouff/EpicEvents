@@ -74,4 +74,4 @@ class Event(Base):
         self.notes = notes
 
     def __repr__(self):
-        return f"Event: event_id {self.event_id} from client :(id){self.client_id}. Uspport in charge: (id){self.support_id}"
+        return f"Event: event_id {self.event_id} from client :(id){self.client_id}. Support in charge: (id){self.support_id}"

@@ -5,6 +5,7 @@ import Constantes.constantes as constante
 class MainView:
     def show_main_menu(self, is_authenticated):
         print("\n--- CRM Authentication System ---")
+
         if is_authenticated:
             print(f"{constante.DISCONNECT}. Disconnect")
         else:

@@ -1,13 +1,7 @@
 import pytest
-from pytest_mock import mocker
-from crm.controllers.auth_controller import authenticate
-from crm.controllers.permissions import requires_permission
-from crm.models.user import User
-from argon2 import PasswordHasher
 import Constantes.constantes as constante
 import pytest
 from datetime import datetime, timedelta
-import jwt
 from crm.controllers.main_controller import MainController
 from crm.views.main_view import MainView
 
@@ -90,7 +84,7 @@ def test_main_menu_login(controller, mocker):
     mock_token = "fake_token"
     mock_role_id = 2
     mocker.patch(
-        "crm.controllers.main_controller.authenticate",
+        "crm.models.user.User.authenticate",
         return_value=(mock_token, mock_role_id),
     )
 
@@ -139,7 +133,7 @@ def test_handle_authentication_with_no_token(controller, mocker):
 
 
 def test_login_success(controller, mocker, mock_jwt_decode):
-    mock_authenticate = mocker.patch("crm.controllers.main_controller.authenticate")
+    mock_authenticate = mocker.patch("crm.models.user.User.authenticate")
     mock_authenticate.return_value = ("fake_token", 1)
 
     mock_jwt_decode.return_value = {
@@ -160,7 +154,7 @@ def test_login_success(controller, mocker, mock_jwt_decode):
 
 
 def test_login_failure(controller, mocker):
-    mock_authenticate = mocker.patch("crm.controllers.main_controller.authenticate")
+    mock_authenticate = mocker.patch("crm.models.user.User.authenticate")
     mock_authenticate.return_value = (None, None)
 
     controller.view.get_login_credentials.return_value = (

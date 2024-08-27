@@ -10,8 +10,7 @@ import Constantes.constantes as constante
 def view_client():
     session = Session()
     client_list = session.query(Client).all()
-    for client in client_list:
-        print(f"Liste des clients : {client}")
+    client_view.ClientView.display_client_list(client_list)
 
 
 def view_user_clients(user_id):

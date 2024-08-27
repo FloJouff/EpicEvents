@@ -111,3 +111,8 @@ class EventView:
         event_id = input("Event's id : ")
         support_id = input("User_id you want to afffect to this event : ")
         return event_id, support_id
+
+    @staticmethod
+    def get_event_id():
+        event_id = input("Enter the event ID: ")
+        return int(event_id)

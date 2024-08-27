@@ -133,10 +133,10 @@ class AdminController:
                 create_event(*result, current_user_role_id=role_id)
             elif adm_event_choice == constante.ADMIN_UPDATE_EVENT:
                 event_id = input("Event_id needing an update : ")
-                update_event_menu(user_id, event_id)
+                update_event_menu(user_id, event_id, role_id)
             elif adm_event_choice == constante.ADMIN_DELETE_EVENT:
                 event_id_to_delete = EventView.get_event_id_for_deletion()
-                success = delete_contract(event_id_to_delete)
+                success = delete_event(event_id_to_delete, role_id)
                 if success:
                     print("Event deleted successfully.")
                 else:

@@ -1,7 +1,6 @@
 import pytest
 from crm.models.user import User
 from argon2 import PasswordHasher
-from crm.controllers.auth_controller import authenticate
 from crm.controllers.permissions import requires_permission
 
 ph = PasswordHasher()
@@ -68,20 +67,33 @@ def mock_user():
 
 
 def test_authenticate_success(mocker, mock_session, mock_user):
-    mocker.patch("crm.controllers.auth_controller.Session", return_value=mock_session)
+    # Mock the Session import inside the authenticate method
+    mocker.patch("crm.database.Session", return_value=mock_session)
     mock_session.query.return_value.filter_by.return_value.first.return_value = mock_user
 
-    token, role_id = authenticate("test@example.com", "password123")
+    # Mock the entire PasswordHasher
+    mock_ph = mocker.Mock(spec=PasswordHasher)
+    mock_ph.verify.return_value = True
+    mocker.patch("crm.models.user.ph", mock_ph)
 
-    assert token is not None
-    assert role_id == 2
+    # Mock jwt encoding
+    mocker.patch("crm.models.user.jwt.encode", return_value="mocked_token")
+
+    token, role_id = User.authenticate("test@example.com", "password123")
+
+    assert token == "mocked_token"
+    assert role_id == mock_user.role_id
+
+    # Verify that verify was called with the correct arguments
+    mock_ph.verify.assert_called_once_with(mock_user.password, "password123")
 
 
 def test_authenticate_failure(mocker, mock_session):
-    mocker.patch("crm.controllers.auth_controller.Session", return_value=mock_session)
+    # Mock the Session import inside the authenticate method
+    mocker.patch("crm.database.Session", return_value=mock_session)
     mock_session.query.return_value.filter_by.return_value.first.return_value = None
 
-    token, role_id = authenticate("wrong@example.com", "wrongpassword")
+    token, role_id = User.authenticate("wrong@example.com", "wrongpassword")
 
     assert token is None
     assert role_id is None

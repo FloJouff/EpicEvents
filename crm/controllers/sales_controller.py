@@ -45,7 +45,9 @@ class SalesController:
                 )
             elif sales_client_choice == constante.SALES_UPDATE_CLIENT:
                 client_id = input("Client_id you need to update : ")
-                client_controller.update_client_menu(user_id, client_id)
+                client_controller.update_client_menu(
+                    user_id, client_id, current_user_role_id=role_id
+                )
             elif sales_client_choice == constante.SALES_VIEW_OWN_CLIENT:
                 client_controller.view_own_client(user_id)
             elif sales_client_choice == "0":
@@ -65,7 +67,9 @@ class SalesController:
             elif sales_contract_choice == constante.SALES_UPDATE_OWN_CONTRACT:
                 contract_id = input("Contract_id you need to update : ")
                 SalesContractView.show_sales_update_contract_menu()
-                contracts_controller.update_own_contract_menu(user_id, contract_id)
+                contracts_controller.update_own_contract_menu(
+                    user_id, contract_id, role_id
+                )
             elif sales_contract_choice == constante.SALES_UNSIGNED_CONTRACT:
                 contracts_controller.view_unsigned_contract()
             elif sales_contract_choice == constante.SALES_UNPAID_CONTRACT:
