@@ -1,5 +1,5 @@
 from crm.database import Session
-from crm.models import Client, User
+from crm.models import Client
 from datetime import datetime
 from crm.views import client_view
 
@@ -13,13 +13,6 @@ def view_client():
     client_view.ClientView.display_client_list(client_list)
 
 
-def view_user_clients(user_id):
-    session = Session()
-    user_client_list = session.query(Client).all()
-    for client in user_client_list:
-        print(f"Clients list : {client}")
-
-
 @requires_permission("create_client")
 def create_client(
     name, firstname, email, phone, company, contact_id, current_user_role_id
@@ -28,7 +21,7 @@ def create_client(
     try:
         existing_client = session.query(Client).filter_by(email=email).first()
         if existing_client:
-            print("This client already exists.")
+            client_view.ClientView.show_client_error_message()
             return False
 
         new_client = Client(
@@ -44,7 +37,7 @@ def create_client(
 
         session.add(new_client)
         session.commit()
-        print("client registered successfully.")
+        client_view.ClientView.show_create_client_success_message()
         return True
     except Exception as e:
         print(f"Error during registration: {e}")
@@ -57,8 +50,7 @@ def create_client(
 def view_own_client(user_id):
     session = Session()
     user_own_client_list = session.query(Client).filter_by(contact_id=user_id).all()
-    for client in user_own_client_list:
-        print(f"Your clients's list: {client}")
+    client_view.ClientView.display_client_list(user_own_client_list)
 
 
 @requires_permission("update_client")
@@ -77,7 +69,7 @@ def update_client(
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
         if not client:
-            print("Client not found.")
+            client_view.ClientView.show_client_error_message()
             return False
         if name:
             client.name = name
@@ -93,7 +85,7 @@ def update_client(
             client.contact_id = contact_id
 
         session.commit()
-        print("Client updated successfully.")
+        client_view.ClientView.show_update_client_success_message()
         return True
     except Exception as e:
         print(f"Error updating user: {e}")
@@ -109,12 +101,12 @@ def update_client_sales(user_id, client_id, contact_id, current_user_role_id):
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
         if not client:
-            print("Client not found.")
+            client_view.ClientView.show_client_error_message()
             return False
         client.contact_id = contact_id
 
         session.commit()
-        print("Client's sales updated successfully.")
+        client_view.ClientView.show_update_client_contact_id()
         return True
     except Exception as e:
         print(f"Error updating user: {e}")
@@ -130,11 +122,11 @@ def delete_client(client_id, current_user_role_id):
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
         if not client:
-            print(f"User with id {client_id} not found")
+            client_view.ClientView.show_client_error_message()
             return False
         session.delete(client)
         session.commit()
-        print(f"User with ID {client_id} has been deleted successfully")
+        client_view.ClientView.show_delete_client_success_message()
         return True
     except Exception as e:
         print(f"Error deleting client: {e}")

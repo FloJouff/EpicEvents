@@ -1,8 +1,7 @@
 from crm.database import Session
 from crm.models import User
 from argon2 import PasswordHasher
-
-
+from crm.views.user_view import UserView
 from crm.controllers.permissions import requires_permission
 
 ph = PasswordHasher()
@@ -17,7 +16,7 @@ def create_user(
 
         existing_user = session.query(User).filter_by(email=email).first()
         if existing_user:
-            print("This user already exists.")
+            UserView.show_user_already_exists_error_message()
             return False
 
         hashed_password = ph.hash(password)
@@ -32,7 +31,7 @@ def create_user(
 
         session.add(new_user)
         session.commit()
-        print("User registered successfully.")
+        UserView.show_create_user_success()
         return True
     except Exception as e:
         print(f"Error during registration: {e}")
@@ -45,17 +44,18 @@ def create_user(
 def view_users():
     session = Session()
     user_list = session.query(User).all()
-    for user in user_list:
-        print(f"Users list : {user}")
+    UserView.display_user_list(user_list)
 
 
 @requires_permission("update_user")
-def update_user(user_id, name=None, firstname=None, email=None, password=None):
+def update_user(
+    user_id, current_user_role_id, name=None, firstname=None, email=None, password=None
+):
     session = Session()
     try:
         user = session.query(User).filter_by(user_id=user_id).first()
         if not user:
-            print("User not found.")
+            UserView.show_no_user_error_message()
             return False
         if name:
             user.name = name
@@ -67,7 +67,7 @@ def update_user(user_id, name=None, firstname=None, email=None, password=None):
             user.password = ph.hash(password)
 
         session.commit()
-        print("User updated successfully.")
+        UserView.show_update_user_success()
         return True
     except Exception as e:
         print(f"Error updating user: {e}")
@@ -82,16 +82,16 @@ def change_password(user_id, old_password, new_password):
     try:
         user = session.query(User).filter_by(user_id=user_id).first()
         if not user:
-            print("User not found.")
+            UserView.show_no_user_error_message()
             return False
 
         if not user.check_password(old_password):
-            print("Incorrect old password.")
+            UserView.show_invalid_old_password()
             return False
 
         user.password = ph.hash(new_password)
         session.commit()
-        print("Password updated successfully.")
+        UserView.show_password_change_successfully()
         return True
     except Exception as e:
         print(f"Error updating user's password: {e}")
@@ -101,16 +101,17 @@ def change_password(user_id, old_password, new_password):
         session.close()
 
 
-def delete_user(user_id):
+@requires_permission("delete_user")
+def delete_user(user_id, current_user_role_id):
     session = Session()
     try:
         user = session.query(User).filter_by(user_id=user_id).first()
         if not user:
-            print(f"User with id {user_id} not found")
+            UserView.show_no_user_error_message()
             return False
         session.delete(user)
         session.commit()
-        print(f"User with ID {user_id} has been deleted successfully")
+        UserView.show_delete_success_message(user_id)
         return True
     except Exception as e:
         print(f"Error deleting user: {e}")

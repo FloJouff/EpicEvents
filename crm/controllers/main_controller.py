@@ -58,14 +58,22 @@ class MainController:
             self.view.show_login_failure()
 
     def handle_role_specific_actions(self):
-        if self.role_id == int(Role.ADMIN.value):
-            AdminController.handle_admin_menu(self.user_id, self.role_id)
-        elif self.role_id == int(Role.GESTION.value):
-            ManagementController.handle_management_menu(self.user_id, self.role_id)
-        elif self.role_id == int(Role.COMMERCIAL.value):
-            SalesController.handle_sales_menu(self.user_id, self.role_id)
-        elif self.role_id == int(Role.SUPPORT.value):
-            SupportController.handle_support_menu(self.user_id, self.role_id)
+        if User.authorize(self.token, self.role_id):
+            if self.role_id == int(Role.ADMIN.value):
+                AdminController.handle_admin_menu(self.user_id, self.role_id, self.token)
+            elif self.role_id == int(Role.GESTION.value):
+                ManagementController.handle_management_menu(
+                    self.user_id, self.role_id, self.token
+                )
+            elif self.role_id == int(Role.COMMERCIAL.value):
+                SalesController.handle_sales_menu(self.user_id, self.role_id, self.token)
+            elif self.role_id == int(Role.SUPPORT.value):
+                SupportController.handle_support_menu(
+                    self.user_id, self.role_id, self.token
+                )
+        else:
+            self.view.show_unauthorized_access()
+            self.login()
 
     def handle_disconnection(self):
         if self.token:

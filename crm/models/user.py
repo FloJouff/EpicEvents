@@ -1,6 +1,7 @@
 from sqlalchemy import ForeignKey, Column, String, Integer
 from crm.models import Base
 from sqlalchemy.orm import relationship
+from crm.views.user_view import UserView
 
 from argon2 import PasswordHasher, exceptions
 
@@ -8,6 +9,7 @@ import jwt
 import datetime
 from argon2.exceptions import VerifyMismatchError
 import os
+from rich import print
 
 
 JWT_SECRET = os.getenv("JWT_SECRET", "defaultsecret")
@@ -88,7 +90,8 @@ class User(Base):
                     + datetime.timedelta(seconds=JWT_EXP_DELTA_SECONDS),
                 }
                 token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
-                print(f"Bienvenue {user.name} {user.firstname}")
+                UserView.display_welcome_message(user.name, user.firstname)
+                #print(f"\n [green]Bienvenue [/green] [bold] {user.name} {user.firstname} [/bold]")
                 return token, user.role_id
 
             except VerifyMismatchError:

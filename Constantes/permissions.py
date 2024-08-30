@@ -26,5 +26,5 @@ PERMISSIONS = {
     "create_event": [Role.ADMIN, Role.GESTION, Role.COMMERCIAL],
     "view_events": [Role.ADMIN, Role.GESTION, Role.COMMERCIAL, Role.SUPPORT],
     "update_event": [Role.ADMIN, Role.GESTION],
-    "update_assigned_events": [Role.ADMIN, Role.SUPPORT],
+    "update_assigned_event": [Role.ADMIN, Role.SUPPORT],
 }

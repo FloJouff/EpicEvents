@@ -82,7 +82,7 @@ def test_view_users(mock_session, mock_user_model, capsys):
     assert "Users list" in captured.out
 
 
-def test_update_user_success(mock_session, mock_password_hasher):
+def test_update_user_success(mock_session, mock_password_hasher, mock_user_model):
     # Préparer les mocks
     mock_session_instance = mock_session.return_value
     mock_user = MagicMock()  # Créez un mock d'utilisateur
@@ -93,7 +93,11 @@ def test_update_user_success(mock_session, mock_password_hasher):
 
     # Appeler la fonction
     result = user_controller.update_user(
-        1, name="Doe", email="john.doe@example.com", password="NewPassword123"
+        1,
+        name="Doe",
+        email="john.doe@example.com",
+        password="NewPassword123",
+        current_user_role_id=1,
     )
 
     # Vérifier le résultat
@@ -102,6 +106,7 @@ def test_update_user_success(mock_session, mock_password_hasher):
     assert mock_user.email == "john.doe@example.com"
     assert mock_user.password == "new_hashed_password"
     mock_session_instance.commit.assert_called_once()
+
 
 def test_update_user_not_found(mock_session):
     # Préparer les mocks

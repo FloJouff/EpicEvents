@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from rich import print
 
 
 def validate_email(email):
@@ -7,14 +8,16 @@ def validate_email(email):
     if re.match(email_regex, email):
         return True
     else:
-        print("Invalid email")
+        print("[bold red]Invalid email[/bold red]")
 
 
 def validate_date(date_text):
-    if datetime.strptime(date_text, "%Y-%m-%d"):
+    try:
+        datetime.strptime(date_text, "%Y-%m-%d")
         return True
-    else:
-        print("Incorrect date format (YYYY-MM-DD)")
+    except ValueError:
+        print("[bold red]Incorrect date format (YYYY-MM-DD)[/bold red]")
+        return False
 
 
 def validate_phone_number(phone_number):
@@ -22,7 +25,7 @@ def validate_phone_number(phone_number):
     if re.match(phone_regex, phone_number):
         return True
     else:
-        print("Invalid phone number, must be 10 digits")
+        print("[bold red]Invalid phone number, must be 10 digits[/bold red]")
 
 
 def validate_password(password):
@@ -34,3 +37,23 @@ def validate_password(password):
     #     return False
     # if not re.search(r"[0-9]", password):
     #     return False
+
+
+def validate_name(name):
+    name_regex = r"^[A-Za-z\s-]{2,50}$"
+    if re.match(name_regex, name):
+        return True
+    else:
+        print(
+            "[bold red]Invalid name. Must be 2-50 characters long and contain only letters, spaces, or hyphens.[/bold red]"
+        )
+        return False
+
+
+def validate_id(id_input):
+    id_regex = r"^\d+$"
+    if re.match(id_regex, id_input):
+        return True
+    else:
+        print("[bold red]Invalid ID. Must contain only digits.[/bold red]")
+        return False

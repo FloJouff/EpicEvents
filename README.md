@@ -36,9 +36,9 @@ cd crm
 ### 2. Create and Activate Virtual Environment
 
 ```bash
-python -m venv crm_env
-On Mac : `source crm_env/bin/activate`  
-On Windows : `crm_env\Scripts\activate`
+python -m venv venv
+On Mac : `source venv/bin/activate`  
+On Windows : ` venv\Scripts\activate`
 ```
 
 ### 3. Install Dependencies
@@ -74,11 +74,25 @@ JWT_REFRESH_SECRET=motdepassrefreshsecret
 JWT_ALGORITHM =HS256 
 ```
 
+### 6. Configure db for admin
 
-### 6. Run the Application
+Initialize Role model in database:
+
+```bash
+python initialize_role.py
+```
+
+Then create a superuser, Admin:
+
+```bash
+python create_admin.py
+```
 
 
-To run the application:
+### 7. Run the Application
+
+
+finally, you can run the application:
 
 ```bash
 python main.py

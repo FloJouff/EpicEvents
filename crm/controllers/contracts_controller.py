@@ -5,13 +5,13 @@ import uuid
 from crm.views import contract_view
 from crm.controllers.permissions import requires_permission
 import Constantes.constantes as constante
+from crm.views.contract_view import ContractView
 
 
 def view_contract():
     session = Session()
     contract_list = session.query(Contract).all()
-    for contract in contract_list:
-        print(f"Liste des contrats : {contract}")
+    ContractView.display_contract_list(contract_list)
 
 
 def view_user_own_contracts(user_id):
@@ -19,8 +19,7 @@ def view_user_own_contracts(user_id):
     user_contract_list = (
         session.query(Contract).filter_by(commercial_id=user_id).all()
     )
-    for contract in user_contract_list:
-        print(f"Liste des évènements : {contract}")
+    ContractView.display_contract_list(user_contract_list)
 
 
 @requires_permission("create_contract")
@@ -32,12 +31,6 @@ def create_contract(
 ):
     session = Session()
     try:
-        # existing_contract = (
-        #     session.query(Contract).filter_by(contract_id=contract_id).first()
-        # )
-        # if existing_contract:
-        #     print("This contract already exists.")
-        #     return False
 
         new_contract = Contract(
             contract_id=str(uuid.uuid4()),
@@ -51,7 +44,7 @@ def create_contract(
 
         session.add(new_contract)
         session.commit()
-        print("Contract registered successfully.")
+        ContractView.show_create_contract_success()
         return True
     except Exception as e:
         print(f"Error during registration: {e}")
@@ -75,7 +68,7 @@ def update_contract(
     try:
         contract = session.query(Contract).filter_by(contract_id=contract_id).first()
         if not contract:
-            print("Contract not found.")
+            ContractView.contract_not_found()
             return False
         if client_id:
             contract.client_id = client_id
@@ -87,10 +80,10 @@ def update_contract(
             contract.is_signed = True
 
         session.commit()
-        print("Contract updated successfully.")
+        ContractView.show_update_contract_success()
         return True
     except Exception as e:
-        print(f"Error updating user: {e}")
+        print(f"Error updating contract: {e}")
         session.rollback()
         return False
     finally:
@@ -113,7 +106,7 @@ def update_own_contract(
         contract = session.query(Contract).filter_by(contract_id=contract_id).first()
 
         if not contract:
-            print("Contract not found.")
+            ContractView.contract_not_found()
             return False
         if contract.commercial_id == user_id:
             if client_id:
@@ -126,12 +119,10 @@ def update_own_contract(
                 contract.is_signed = True
 
         else:
-            print(
-                "You're not in charge of this contract. You are not allowed to update it."
-            )
+            ContractView.show_update_contract_noaccess()
 
         session.commit()
-        print("Contract updated successfully.")
+        ContractView.show_update_contract_success()
         return True
     except Exception as e:
         print(f"Error updating contract: {e}")
@@ -164,8 +155,7 @@ def update_own_contract(
 def view_unsigned_contract():
     session = Session()
     unsigned_contract_list = session.query(Contract).filter_by(is_signed=False).all()
-    for contract in unsigned_contract_list:
-        print(f"List of unsigned contracts : {contract}")
+    ContractView.display_contract_list(unsigned_contract_list)
 
 
 def view_unpaid_contract():
@@ -173,8 +163,7 @@ def view_unpaid_contract():
     unpaid_contract_list = (
         session.query(Contract).filter(Contract.remain_amount != 0).all()
     )
-    for contract in unpaid_contract_list:
-        print(f"List of unsolded contracts : {contract}")
+    ContractView.display_unsold_contract_list(unpaid_contract_list)
 
 
 @requires_permission("update_contract")
@@ -184,25 +173,34 @@ def update_contract_menu(user_id, contract_id, current_user_role_id):
         if update_contract_choice == constante.CONTRACT_UPDATE_CLIENT:
             new_client = contract_view.ContractView.get_new_contract_client_id()
             update_contract(
-                user_id, contract_id, current_user_role_id, client_id=new_client
+                user_id,
+                contract_id,
+                current_user_role_id=current_user_role_id,
+                client_id=new_client,
             )
         elif update_contract_choice == constante.CONTRACT_UPDATE_SALES:
             new_sales_id = contract_view.ContractView.get_new_contract_contact_id()
             update_contract(
-                user_id, contract_id, current_user_role_id, commercial_id=new_sales_id
+                user_id,
+                contract_id,
+                current_user_role_id=current_user_role_id,
+                commercial_id=new_sales_id,
             )
         elif update_contract_choice == constante.CONTRACT_UPDATE_STATUS:
             new_status = contract_view.ContractView.get_new_status()
             if new_status == "Y" or "y":
                 update_contract(
-                    user_id, contract_id, current_user_role_id, is_signed=True
+                    user_id,
+                    contract_id,
+                    current_user_role_id=current_user_role_id,
+                    is_signed=True,
                 )
         elif update_contract_choice == constante.CONTRACT_UPDATE_REMAIN:
             new_total_remain = contract_view.ContractView.get_new_contract_remain_cost()
             update_contract(
                 user_id,
                 contract_id,
-                current_user_role_id,
+                current_user_role_id=current_user_role_id,
                 remain_amount=new_total_remain,
             )
         elif update_contract_choice == "0":
@@ -226,6 +224,8 @@ def update_own_contract_menu(user_id, contract_id, role_id):
                 update_own_contract(
                     user_id, contract_id, current_user_role_id=role_id, is_signed=True
                 )
+            else:
+                ContractView.show_invalid_answer()
         elif update_contract_choice == constante.CONTRACT_UPDATE_REMAIN:
             new_total_remain = contract_view.ContractView.get_new_contract_remain_cost()
             update_own_contract(
