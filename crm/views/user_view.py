@@ -22,7 +22,7 @@ class AdminView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Admin Main Menu [/bold white underline]---",
+                    "---[bold white] Admin Main Menu [/bold white]---",
                     (1, 4),
                 )
             )
@@ -82,7 +82,7 @@ class ManagementView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Management Main Menu [/bold white underline]---",
+                    "---[bold white] Management Main Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -108,7 +108,7 @@ class ManagementView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Users Menu [/bold white underline]---",
+                    "---[bold white] Users Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -135,7 +135,7 @@ class SalesView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Sales Main Menu [/bold white underline]---",
+                    "---[bold white] Sales Main Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -158,7 +158,7 @@ class SupportView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Support Main Menu Support [/bold white underline]---",
+                    "---[bold white] Support Main Menu Support [/bold white]---",
                     (1, 2),
                 )
             )
@@ -237,7 +237,14 @@ class UserView:
 
     @staticmethod
     def change_password_menu():
-        print(Panel.fit("---[bold white] Change Password [/bold white] ---", (2, 2)))
+        console.print(
+            Panel.fit(
+                Padding(
+                    "---[bold white] Change password Menu[/bold white]---",
+                    (1, 2),
+                )
+            )
+        )
         old_password = getpass.getpass("Enter your current password: ")
         while True:
             new_password = getpass.getpass(

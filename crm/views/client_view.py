@@ -28,7 +28,7 @@ class AdminClientView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Admin Client Menu [/bold white underline]---",
+                    "---[bold white] Admin Client Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -52,7 +52,7 @@ class ManagementClientView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Manager Client Menu [/bold white underline]---",
+                    "---[bold white]Manager Client Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -76,7 +76,7 @@ class SalesClientView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Sales Client Menu [/bold white underline]---",
+                    "---[bold white]Sales Client Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -121,7 +121,7 @@ class SalesClientView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Update Client Menu [/bold white underline]---",
+                    "---[bold white]Update Client Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -148,7 +148,7 @@ class SupportClientView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Support Client Menu [/bold white underline]---",
+                    "---[bold white]Support Client Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -166,7 +166,7 @@ class ClientView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Update User Profile [/bold white underline]---",
+                    "---[bold white]Update User Profile [/bold white]---",
                     (1, 2),
                 )
             )
@@ -294,8 +294,8 @@ class ClientView:
         table.add_column("Company", style="magenta")
         table.add_column("Email", style="green")
         table.add_column("Phone", style="green")
-        table.add_column("creation_date", style="yellow")
-        table.add_column("last_contact_date", style="yellow")
+        table.add_column("creation_date", style="#dbe15a")
+        table.add_column("last_contact_date", style="#dbe15a")
         table.add_column("contact_id", style="purple")
 
         # Ajouter les lignes

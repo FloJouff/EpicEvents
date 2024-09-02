@@ -29,10 +29,10 @@ def initialize_roles():
         if not existing_role:
             new_role = Role(role_id=role["role_id"], role_name=role["role_name"])
             session.add(new_role)
-            print(f"Rôle {role['role_name']} ajouté.")
+            print(f"Role {role['role_name']} added.")
     session.commit()
 
 
 if __name__ == "__main__":
     initialize_roles()
-    print("Initialisation des rôles terminée.")
+    print("Roles initialization done.")

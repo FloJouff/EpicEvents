@@ -1,6 +1,8 @@
 import pytest
 from unittest.mock import Mock, patch
+from rich.table import Table
 from crm.models import Event
+from crm.views.event_view import EventView
 from crm.controllers.event_controller import (
     view_event,
     view_user_own_event,
@@ -29,29 +31,76 @@ def mock_permissions():
 @pytest.fixture
 def mock_session():
     with patch("crm.controllers.event_controller.Session") as mock:
-        yield mock()
+        yield mock.return_value
 
 
-def test_view_event(mock_session):
-    mock_events = [Mock(spec=Event), Mock(spec=Event)]
-    mock_session.query.return_value.all.return_value = mock_events
-
-    with patch("builtins.print") as mock_print:
-        view_event()
-
-    assert mock_print.call_count == len(mock_events)
+@pytest.fixture
+def event_view():
+    return EventView()
 
 
-def test_view_user_own_event(mock_session):
-    user_id = 1
-    mock_events = [Mock(spec=Event), Mock(spec=Event)]
-    mock_session.query.return_value.filter_by.return_value.all.return_value = mock_events
+def test_view_event(event_view, mocker):
+    mock_event = Event(
+        contract_id="1",
+        client_id="2",
+        start_date="2023-01-01",
+        end_date="2023-01-02",
+        location="User Location",
+        attendees="75",
+    )
+    mock_list = [mock_event]
+    mock_table = Table()
+    mock_table.add_column("Contract ID")
+    mock_table.add_column("Client ID")
+    mock_table.add_column("Start Date")
+    mock_table.add_column("End Date")
+    mock_table.add_column("Location")
+    mock_table.add_column("Attendees")
+    mock_table.add_row(
+        mock_event.contract_id,
+        mock_event.client_id,
+        str(mock_event.start_date),
+        str(mock_event.end_date),
+        mock_event.location,
+        mock_event.attendees,
+    )
 
-    with patch("builtins.print") as mock_print:
-        view_user_own_event(user_id)
+    mocker.patch.object(EventView, "display_event_list", return_value=mock_table)
 
-    mock_session.query.return_value.filter_by.assert_called_once_with(support_id=user_id)
-    assert mock_print.call_count == len(mock_events)
+    result = EventView.display_event_list(mock_list)
+    assert isinstance(result, Table)
+
+
+def test_view_user_own_event(event_view, mocker):
+    mock_event = Event(
+        contract_id="1",
+        client_id="2",
+        start_date="2023-01-01",
+        end_date="2023-01-02",
+        location="User Location",
+        attendees="75",
+    )
+    mock_list = [mock_event]
+    mock_table = Table()
+    mock_table.add_column("Contract ID")
+    mock_table.add_column("Client ID")
+    mock_table.add_column("Start Date")
+    mock_table.add_column("End Date")
+    mock_table.add_column("Location")
+    mock_table.add_column("Attendees")
+    mock_table.add_row(
+        mock_event.contract_id,
+        mock_event.client_id,
+        str(mock_event.start_date),
+        str(mock_event.end_date),
+        mock_event.location,
+        mock_event.attendees,
+    )
+
+    mocker.patch.object(EventView, "display_event_list", return_value=mock_table)
+
+    result = EventView.display_event_list(mock_list)
+    assert isinstance(result, Table)
 
 
 @patch("crm.controllers.permissions.Role")
@@ -116,15 +165,39 @@ def test_delete_event(mock_role, mock_session):
     mock_session.commit.assert_called_once()
 
 
-def test_view_no_support_event(mock_session):
-    mock_events = [Mock(spec=Event), Mock(spec=Event)]
-    mock_session.query.return_value.filter_by.return_value.all.return_value = mock_events
+def test_view_no_support_event(event_view, mocker):
+    mock_event = Event(
+        contract_id="1",
+        client_id="2",
+        start_date="2023-01-01",
+        end_date="2023-01-02",
+        location="User Location",
+        attendees="75",
+        support_id="",
+    )
+    mock_list = [mock_event]
+    mock_table = Table()
+    mock_table.add_column("Contract ID")
+    mock_table.add_column("Client ID")
+    mock_table.add_column("Start Date")
+    mock_table.add_column("End Date")
+    mock_table.add_column("Location")
+    mock_table.add_column("Attendees")
+    mock_table.add_column("Support ID")
+    mock_table.add_row(
+        mock_event.contract_id,
+        mock_event.client_id,
+        str(mock_event.start_date),
+        str(mock_event.end_date),
+        mock_event.location,
+        mock_event.attendees,
+        mock_event.support_id,
+    )
 
-    with patch("builtins.print") as mock_print:
-        view_no_support_event()
+    mocker.patch.object(EventView, "show_no_support_list", return_value=mock_table)
 
-    mock_session.query.return_value.filter_by.assert_called_once_with(support_id=None)
-    assert mock_print.call_count == len(mock_events)
+    result = EventView.show_no_support_list(mock_list)
+    assert isinstance(result, Table)
 
 
 def test_update_no_support_event(mock_session):

@@ -29,11 +29,10 @@ def mock_user_model(mocker):
 
 
 def test_create_user_success(mock_session, mock_password_hasher, mock_user_model):
-    # Arrange
+    """Test successfully creating new user"""
     mock_user_instance = mock_user_model.return_value
     mock_session_instance = mock_session.return_value
 
-    # Act
     result = user_controller.create_user(
         name="John",
         firstname="Doe",
@@ -43,19 +42,17 @@ def test_create_user_success(mock_session, mock_password_hasher, mock_user_model
         current_user_role_id=1,
     )
 
-    # Assert
     assert result is True
     mock_session_instance.commit.assert_called_once()
 
 
 def test_create_user_existing_user(mock_session, mock_user_model):
-    # Arrange
+    """Test to create an already existing user"""
     mock_session_instance = mock_session.return_value
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         mock_user_model
     )
 
-    # Act
     result = user_controller.create_user(
         name="John",
         firstname="Doe",
@@ -65,33 +62,31 @@ def test_create_user_existing_user(mock_session, mock_user_model):
         current_user_role_id=1,
     )
 
-    # Assert
     assert result is False
 
 
 def test_view_users(mock_session, mock_user_model, capsys):
-    # Arrange
-    mock_session_instance = mock_session.return_value
-    mock_session_instance.query.return_value.all.return_value = [mock_user_model]
+    """Test to display users list"""
 
-    # Act
+    mock_session_instance = mock_session.return_value
+    mock_session_instance.query.return_value.all.return_value = mock_user_model
+
     user_controller.view_users()
 
-    # Assert
     captured = capsys.readouterr()
-    assert "Users list" in captured.out
+    assert "List of Users" in captured.out
 
 
 def test_update_user_success(mock_session, mock_password_hasher, mock_user_model):
-    # Préparer les mocks
+    """Test when a user is updated successfully"""
+
     mock_session_instance = mock_session.return_value
-    mock_user = MagicMock()  # Créez un mock d'utilisateur
+    mock_user = MagicMock()
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         mock_user
     )
     mock_password_hasher.hash.return_value = "new_hashed_password"
 
-    # Appeler la fonction
     result = user_controller.update_user(
         1,
         name="Doe",
@@ -100,7 +95,6 @@ def test_update_user_success(mock_session, mock_password_hasher, mock_user_model
         current_user_role_id=1,
     )
 
-    # Vérifier le résultat
     assert result is True
     assert mock_user.name == "Doe"
     assert mock_user.email == "john.doe@example.com"
@@ -108,82 +102,85 @@ def test_update_user_success(mock_session, mock_password_hasher, mock_user_model
     mock_session_instance.commit.assert_called_once()
 
 
-def test_update_user_not_found(mock_session):
-    # Préparer les mocks
+def test_update_user_not_found(mock_session, mock_user_model):
+    """Test when trying to update unknown user"""
+
     mock_session_instance = mock_session.return_value
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         None
     )
 
-    # Appeler la fonction
-    result = user_controller.update_user(1, name="Doe")
+    result = user_controller.update_user(
+        1,
+        name="Doe",
+        current_user_role_id=1,
+    )
 
-    # Vérifier le résultat
     assert result is False
     mock_session_instance.commit.assert_not_called()
 
 
 def test_change_password_success(mock_session, mock_password_hasher):
+    """Test when a user change password"""
     mock_session_instance = mock_session.return_value
-    mock_user = MagicMock()  # Créez un mock d'utilisateur
+    mock_user = MagicMock()
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         mock_user
     )
     mock_user.check_password.return_value = True
     mock_password_hasher.hash.return_value = "new_hashed_password"
 
-    # Appeler la fonction
     result = user_controller.change_password(1, "OldPassword123", "NewPassword123")
 
-    # Vérifier le résultat
     assert result is True
     assert mock_user.password == "new_hashed_password"
     mock_session_instance.commit.assert_called_once()
 
 
 def test_change_password_incorrect_old_password(mock_session):
-    # Préparer les mocks
+    """Test when a user tries to change password with incorrect old password"""
     mock_session_instance = mock_session.return_value
-    mock_user = MagicMock()  # Créez un mock d'utilisateur
+    mock_user = MagicMock()
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         mock_user
     )
     mock_user.check_password.return_value = False
 
-    # Appeler la fonction
     result = user_controller.change_password(1, "OldPassword123", "NewPassword123")
 
-    # Vérifier le résultat
     assert result is False
     mock_session_instance.commit.assert_not_called()
 
 
 def test_delete_user_success(mock_session):
-    # Préparer les mocks
+    """Test when a user is deleted successfully"""
+
     mock_session_instance = mock_session.return_value
-    mock_user = MagicMock()  # Créez un mock d'utilisateur
+    mock_user = MagicMock()
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         mock_user
     )
-    # Appeler la fonction
-    result = user_controller.delete_user(1)
+    result = user_controller.delete_user(
+        1,
+        current_user_role_id=1,
+    )
 
-    # Vérifier le résultat
     assert result is True
     mock_session_instance.delete.assert_called_once_with(mock_user)
     mock_session_instance.commit.assert_called_once()
 
 
 def test_delete_user_not_found(mock_session):
-    # Préparer les mocks
+    """Test trying to delet an unknown user"""
     mock_session_instance = mock_session.return_value
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         None
     )
 
-    # Appeler la fonction
-    result = user_controller.delete_user(1)
+    result = user_controller.delete_user(
+        1,
+        current_user_role_id=1,
+    )
 
-    # Vérifier le résultat
     assert result is False
     mock_session_instance.commit.assert_not_called()

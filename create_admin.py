@@ -40,9 +40,9 @@ def create_admin(name, firstname, email, password):
 
 
 if __name__ == "__main__":
-    name = input("Entrez le nom de l'administrateur : ")
-    firstname = input("Entrez le prénom de l'administrateur : ")
-    email = input("Entrez l'email de l'administrateur : ")
-    password = input("Entrez le mot de passe de l'administrateur : ")
+    name = input("Input admin name : ")
+    firstname = input("Input admin firstname : ")
+    email = input("Input admin Email : ")
+    password = input("Input Admin password : ")
 
     create_admin(name, firstname, email, password)

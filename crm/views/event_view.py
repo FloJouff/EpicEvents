@@ -21,7 +21,7 @@ class AdminEventView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Admin Event Menu [/bold white underline]---",
+                    "---[bold white] Admin Event Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -46,7 +46,7 @@ class ManagementEventView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Manager Event Menu [/bold white underline]---",
+                    "---[bold white]Manager Event Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -76,7 +76,7 @@ class SalesEventView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Sales Event Menu [/bold white underline]---",
+                    "---[bold white]Sales Event Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -95,7 +95,7 @@ class SupportEventView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Support Event Menu [/bold white underline]---",
+                    "---[bold white]Support Event Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -119,7 +119,7 @@ class EventView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]Update Event Menu [/bold white underline]---",
+                    "---[bold white]Update Event Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -280,32 +280,35 @@ class EventView:
 
     @staticmethod
     def show_no_support_list(event_list):
-        table = Table(title="List of Events with no support")
+        if event_list:
+            table = Table(title="List of Events with no support")
 
-        table.add_column("ID", style="cyan", justify="right")
-        table.add_column("Client ID", style="magenta")
-        table.add_column("Contract ID", style="magenta")
-        table.add_column("Support ID", style="magenta")
-        table.add_column("Start Date", style="green")
-        table.add_column("End Date", style="green")
-        table.add_column("Location", style="yellow")
-        table.add_column("Attendees", style="yellow")
-        table.add_column("Notes", style="grey")
+            table.add_column("ID", style="cyan", justify="right")
+            table.add_column("Client ID", style="magenta")
+            table.add_column("Contract ID", style="magenta")
+            table.add_column("Support ID", style="magenta")
+            table.add_column("Start Date", style="green")
+            table.add_column("End Date", style="green")
+            table.add_column("Location", style="#dbe15a")
+            table.add_column("Attendees", style="#dbe15a")
+            table.add_column("Notes", style="#cccccc")
 
-        for event in event_list:
-            table.add_row(
-                str(event.event_id),
-                str(event.client_id),
-                str(event.contract_id),
-                str(event.support_id),
-                str(event.start_date),
-                str(event.end_date),
-                event.location,
-                str(event.attendees),
-                event.notes,
-            )
+            for event in event_list:
+                table.add_row(
+                    str(event.event_id),
+                    str(event.client_id),
+                    str(event.contract_id),
+                    str(event.support_id),
+                    str(event.start_date),
+                    str(event.end_date),
+                    event.location,
+                    str(event.attendees),
+                    event.notes,
+                )
 
-        console.print(table)
+            console.print(table)
+        else:
+            return console.print("[yellow] No event with unaffected support. [/yellow]")
 
     @staticmethod
     def display_event_list(event_list):
@@ -317,8 +320,8 @@ class EventView:
         table.add_column("Support ID", style="magenta")
         table.add_column("Start Date", style="green")
         table.add_column("End Date", style="green")
-        table.add_column("Location", style="yellow")
-        table.add_column("Attendees", style="yellow")
+        table.add_column("Location", style="#dbe15a")
+        table.add_column("Attendees", style="#dbe15a")
         table.add_column("Notes", style="white")
 
         for event in event_list:

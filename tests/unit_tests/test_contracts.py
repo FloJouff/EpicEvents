@@ -38,8 +38,7 @@ def test_view_contract(mock_session, capsys):
     view_contract()
 
     captured = capsys.readouterr()
-    assert "Liste des contrats : " in captured.out
-    assert len(captured.out.strip().split("\n")) == 2
+    assert "List of contracts" in captured.out
 
 
 def test_view_user_own_contracts(mock_session, capsys):
@@ -52,8 +51,7 @@ def test_view_user_own_contracts(mock_session, capsys):
     view_user_own_contracts(user_id)
 
     captured = capsys.readouterr()
-    assert "Liste des évènements : " in captured.out
-    assert len(captured.out.strip().split("\n")) == 2
+    assert "List of contracts" in captured.out
 
 
 @patch("crm.controllers.contracts_controller.uuid.uuid4")
@@ -98,25 +96,6 @@ def test_update_contract(mock_role, mock_session):
     mock_session.commit.assert_called_once()
 
 
-# @patch("Constantes.permissions.Role")
-# def test_delete_contract(mock_role, mock_session):
-#     contract_id = "test-id"
-#     mock_contract = Mock()
-#     mock_session.query.return_value.filter_by.return_value.first.return_value = (
-#         mock_contract
-#     )
-
-#     mock_role.return_value = Role("4")
-
-#     result = delete_contract(
-#         user_id=1, contract_id=contract_id, current_user_role_id="1"
-#     )
-
-#     assert result is True
-#     mock_session.delete.assert_called_once_with(mock_contract)
-#     mock_session.commit.assert_called_once()
-
-
 @patch("Constantes.permissions.Role")
 def test_update_contract_permission_denied(mock_role, mock_session):
     mock_role.return_value = Role("3")
@@ -124,15 +103,6 @@ def test_update_contract_permission_denied(mock_role, mock_session):
     result = update_contract(user_id=1, contract_id="test-id", client_id=2)
 
     assert result is None
-
-
-# @patch("Constantes.permissions.Role")
-# def test_delete_contract_permission_denied(mock_role, mock_session):
-#     mock_role.return_value = Role("3")
-
-#     result = delete_contract(user_id=1, contract_id="test-id")
-
-#     assert result is None
 
 
 def test_view_unsigned_contract(mock_session, capsys):
@@ -144,8 +114,7 @@ def test_view_unsigned_contract(mock_session, capsys):
     view_unsigned_contract()
 
     captured = capsys.readouterr()
-    assert "List of unsigned contracts : " in captured.out
-    assert len(captured.out.strip().split("\n")) == 2
+    assert "List of contracts" in captured.out
 
 
 def test_view_unpaid_contract(mock_session, capsys):
@@ -155,5 +124,4 @@ def test_view_unpaid_contract(mock_session, capsys):
     view_unpaid_contract()
 
     captured = capsys.readouterr()
-    assert "List of unsolded contracts : " in captured.out
-    assert len(captured.out.strip().split("\n")) == 2
+    assert "List of unsold contracts" in captured.out

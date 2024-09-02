@@ -22,7 +22,7 @@ class AdminContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Manager Contract Menu [/bold white underline]---",
+                    "---[bold white] Manager Contract Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -49,7 +49,7 @@ class ManagementContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Manager Contract Menu [/bold white underline]---",
+                    "---[bold white] Manager Contract Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -75,7 +75,7 @@ class SalesContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Sales Contrat Menu [/bold white underline]---",
+                    "---[bold white] Sales Contrat Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -113,7 +113,7 @@ class SalesContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Update Contract [/bold white underline]---",
+                    "---[bold white] Update Contract [/bold white]---",
                     (1, 2),
                 )
             )
@@ -143,7 +143,7 @@ class SupportContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Support contract Menu [/bold white underline]---",
+                    "---[bold white] Support contract Menu [/bold white]---",
                     (1, 2),
                 )
             )
@@ -161,7 +161,7 @@ class ContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline] Update contract [/bold white underline]---",
+                    "---[bold white] Update contract [/bold white]---",
                     (1, 2),
                 )
             )
@@ -203,7 +203,7 @@ class ContractView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white underline]- Update Contract [/bold white underline]---",
+                    "---[bold white]- Update Contract [/bold white]---",
                     (1, 2),
                 )
             )
@@ -295,7 +295,7 @@ class ContractView:
         table.add_column("commercial_id", style="magenta")
         table.add_column("total_amount", style="green")
         table.add_column("remain_amount", style="green")
-        table.add_column("creation_date", style="yellow")
+        table.add_column("creation_date", style="#dbe15a")
         table.add_column("is_signed", style="purple")
 
         for contract in contract_list:
@@ -317,14 +317,14 @@ class ContractView:
 
     @staticmethod
     def display_unsold_contract_list(contract_list):
-        table = Table(title="List of ubsold contracts")
+        table = Table(title="List of unsold contracts")
 
         table.add_column("ID", style="cyan", justify="right")
         table.add_column("client_id", style="magenta")
         table.add_column("commercial_id", style="magenta")
         table.add_column("total_amount", style="green")
         table.add_column("remain_amount", style="green")
-        table.add_column("creation_date", style="yellow")
+        table.add_column("creation_date", style="#dbe15a")
         table.add_column("is_signed", style="purple")
 
         for contract in contract_list:
