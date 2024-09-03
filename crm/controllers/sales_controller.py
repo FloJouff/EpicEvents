@@ -9,6 +9,7 @@ from crm.controllers import client_controller
 from crm.models import User
 from crm.controllers import contracts_controller
 from crm.controllers import event_controller
+import sentry_sdk
 
 
 class SalesController:
@@ -35,6 +36,7 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -60,6 +62,7 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -69,14 +72,14 @@ class SalesController:
                 sales_contract_choice = SalesContractView.show_sales_contract_menu()
                 if sales_contract_choice == constante.SALES_VIEW_CONTRACT:
                     contracts_controller.view_contract()
-                elif sales_contract_choice == constante.SALES_CREATE_CONTRACT:
-                    result = ContractView.get_new_contract_info()
-                    contracts_controller.create_contract(
-                        *result, current_user_role_id=role_id
-                    )
+                # elif sales_contract_choice == constante.SALES_CREATE_CONTRACT:
+                #     result = ContractView.get_new_contract_info()
+                #     contracts_controller.create_contract(
+                #         *result, current_user_role_id=role_id
+                #     )
                 elif sales_contract_choice == constante.SALES_UPDATE_OWN_CONTRACT:
                     contract_id = ContractView.get_contract_id()
-                    SalesContractView.show_sales_update_contract_menu()
+                    # SalesContractView.show_sales_update_contract_menu()
                     contracts_controller.update_own_contract_menu(
                         user_id, contract_id, role_id
                     )
@@ -90,6 +93,7 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -106,4 +110,5 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return

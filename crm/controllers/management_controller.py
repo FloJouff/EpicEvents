@@ -23,6 +23,7 @@ from crm.controllers.event_controller import (
     update_no_support_event,
 )
 from validators import validate_password, validate_email
+import sentry_sdk
 
 
 class ManagementController:
@@ -53,6 +54,7 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -84,6 +86,7 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -108,6 +111,7 @@ class ManagementController:
                         UserView.show_delete_success_message(user_id_to_delete)
                     else:
                         UserView.show_delete_error_message()
+                        sentry_sdk.capture_message(UserView.show_delete_error_message())
                 elif user_choice == "0":
                     break
         else:
@@ -131,6 +135,7 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -154,6 +159,7 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -172,4 +178,5 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return

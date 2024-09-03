@@ -7,6 +7,7 @@ from crm.views.client_view import ClientView
 from crm.views.contract_view import ContractView
 from crm.views.event_view import EventView
 from crm.views.main_view import MainView
+import sentry_sdk
 from crm.controllers.user_controller import (
     create_user,
     update_user,
@@ -61,6 +62,7 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -88,6 +90,7 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -115,6 +118,7 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -145,6 +149,7 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -171,4 +176,5 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return

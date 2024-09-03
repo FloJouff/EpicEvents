@@ -1,8 +1,9 @@
 from crm.database import Session
 from crm.models import Event
 from crm.views import event_view
-import Constantes.constantes as constante
 from crm.controllers.permissions import requires_permission
+import Constantes.constantes as constante
+import sentry_sdk
 
 
 def view_event():
@@ -50,7 +51,7 @@ def create_event(
         event_view.EventView.show_update_event_success()
         return True
     except Exception as e:
-        print(f"Error during registration: {e}")
+        sentry_sdk.capture_message(f"Error during registration: {e}")
         session.rollback()
         return False
     finally:
@@ -89,7 +90,7 @@ def update_event(
         event_view.EventView.show_update_event_success()
         return True
     except Exception as e:
-        print(f"Error updating event: {e}")
+        sentry_sdk.capture_message(f"Error updating event: {e}")
         session.rollback()
         return False
     finally:
@@ -131,7 +132,7 @@ def update_assigned_event(
         event_view.EventView.show_update_event_success()
         return True
     except Exception as e:
-        print(f"Error updating event: {e}")
+        sentry_sdk.capture_message(f"Error updating event: {e}")
         session.rollback()
         return False
     finally:
@@ -151,7 +152,7 @@ def delete_event(event_id, current_user_role_id):
         event_view.EventView.show_delete_event_success(event_id)
         return True
     except Exception as e:
-        print(f"Error deleting event: {e}")
+        sentry_sdk.capture_message(f"Error deleting event: {e}")
         session.rollback()
         return False
     finally:
@@ -171,7 +172,7 @@ def update_no_support_event(user_id, event_id, support_id):
         event_view.EventView.show_new_support_affected()
         return True
     except Exception as e:
-        print(f"Error updating event: {e}")
+        sentry_sdk.capture_message(f"Error updating event: {e}")
         session.rollback()
         return False
     finally:

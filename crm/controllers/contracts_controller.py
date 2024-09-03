@@ -6,6 +6,7 @@ from crm.views import contract_view
 from crm.controllers.permissions import requires_permission
 import Constantes.constantes as constante
 from crm.views.contract_view import ContractView
+import sentry_sdk
 
 
 def view_contract():
@@ -47,7 +48,7 @@ def create_contract(
         ContractView.show_create_contract_success()
         return True
     except Exception as e:
-        print(f"Error during registration: {e}")
+        sentry_sdk.capture_message(f"Error during registration: {e}")
         session.rollback()
         return False
     finally:
@@ -78,12 +79,15 @@ def update_contract(
             contract.remain_amount = remain_amount
         if is_signed:
             contract.is_signed = True
+            sentry_sdk.capture_message(
+                f"Contract signed : {contract_id}, client ID : {client_id}", level="info"
+            )
 
         session.commit()
         ContractView.show_update_contract_success()
         return True
     except Exception as e:
-        print(f"Error updating contract: {e}")
+        sentry_sdk.capture_message(f"Error updating contract: {e}")
         session.rollback()
         return False
     finally:
@@ -117,6 +121,10 @@ def update_own_contract(
                 contract.remain_amount = remain_amount
             if is_signed:
                 contract.is_signed = True
+                sentry_sdk.capture_message(
+                    f"Contract signed : {contract_id}, client ID : {Contract.client_id}",
+                    level="info",
+                )
 
         else:
             ContractView.show_update_contract_noaccess()
@@ -125,7 +133,7 @@ def update_own_contract(
         ContractView.show_update_contract_success()
         return True
     except Exception as e:
-        print(f"Error updating contract: {e}")
+        sentry_sdk.capture_message(f"Error updating contract: {e}")
         session.rollback()
         return False
     finally:

@@ -2,9 +2,9 @@ from crm.database import Session
 from crm.models import Client
 from datetime import datetime
 from crm.views import client_view
-
 from crm.controllers.permissions import requires_permission
 import Constantes.constantes as constante
+import sentry_sdk
 
 
 def view_client():
@@ -40,7 +40,7 @@ def create_client(
         client_view.ClientView.show_create_client_success_message()
         return True
     except Exception as e:
-        print(f"Error during registration: {e}")
+        sentry_sdk.capture_message(f"Error during registration: {e}")
         session.rollback()
         return False
     finally:
@@ -88,7 +88,7 @@ def update_client(
         client_view.ClientView.show_update_client_success_message()
         return True
     except Exception as e:
-        print(f"Error updating user: {e}")
+        sentry_sdk.capture_message(f"Error updating user: {e}")
         session.rollback()
         return False
     finally:
@@ -109,7 +109,7 @@ def update_client_sales(user_id, client_id, contact_id, current_user_role_id):
         client_view.ClientView.show_update_client_contact_id()
         return True
     except Exception as e:
-        print(f"Error updating user: {e}")
+        sentry_sdk.capture_message(f"Error updating user: {e}")
         session.rollback()
         return False
     finally:
@@ -129,7 +129,7 @@ def delete_client(client_id, current_user_role_id):
         client_view.ClientView.show_delete_client_success_message()
         return True
     except Exception as e:
-        print(f"Error deleting client: {e}")
+        sentry_sdk.capture_message(f"Error deleting client: {e}")
         session.rollback()
         return False
     finally:

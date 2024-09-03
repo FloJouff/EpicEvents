@@ -6,6 +6,7 @@ from crm.views.client_view import SupportClientView
 from crm.views.contract_view import SupportContractView
 from crm.views.event_view import SupportEventView, EventView
 from crm.models import User
+import sentry_sdk
 
 from crm.controllers.client_controller import (
     view_client,
@@ -44,6 +45,7 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -57,6 +59,7 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -72,6 +75,7 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
     @staticmethod
@@ -90,4 +94,5 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return

@@ -72,6 +72,8 @@ DB_PASSWORD='yourpassword'
 JWT_SECRET='yoursecretpassword'
 JWT_REFRESH_SECRET=motdepassrefreshsecret
 JWT_ALGORITHM =HS256 
+
+SENTRY_KEY='your link to your sentry page'
 ```
 
 ### 6. Configure db for admin
@@ -88,6 +90,9 @@ Then create a superuser, Admin:
 python create_admin.py
 ```
 
+or
+
+You can initialize your database with the sql file : Initialize.sql
 
 ### 7. Run the Application
 
@@ -97,6 +102,9 @@ finally, you can run the application:
 ```bash
 python main.py
 ```
+
+Using the crm is as easy as clicking on the command prompts in the various menus.
+The menus displayed depend on the role of the logged-in user.
 
 
 ## Running Tests

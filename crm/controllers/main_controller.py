@@ -1,4 +1,3 @@
-import jwt
 from crm.models.user import User
 from crm.controllers.admin_controller import AdminController
 from crm.controllers.management_controller import ManagementController
@@ -9,6 +8,7 @@ import os
 import Constantes.constantes as constante
 from Constantes.permissions import Role
 from datetime import datetime, timedelta
+import sentry_sdk
 
 JWT_SECRET = os.getenv("JWT_SECRET", "defaultsecret")
 JWT_ALGORITHM = os.getenv("JWT_ALGORITHM")
@@ -73,6 +73,7 @@ class MainController:
                 )
         else:
             self.view.show_unauthorized_access()
+            sentry_sdk.capture_message(self.view.show_unauthorized_access())
             self.login()
 
     def handle_disconnection(self):
