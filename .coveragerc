@@ -1,0 +1,2 @@
+[run]
+omit = create_admin.py, initialize_roles.py, Constantes/*, sentry.py, main.py

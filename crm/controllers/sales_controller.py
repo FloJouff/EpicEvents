@@ -36,7 +36,10 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "sales")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -62,7 +65,10 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "sales")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -72,11 +78,6 @@ class SalesController:
                 sales_contract_choice = SalesContractView.show_sales_contract_menu()
                 if sales_contract_choice == constante.SALES_VIEW_CONTRACT:
                     contracts_controller.view_contract()
-                # elif sales_contract_choice == constante.SALES_CREATE_CONTRACT:
-                #     result = ContractView.get_new_contract_info()
-                #     contracts_controller.create_contract(
-                #         *result, current_user_role_id=role_id
-                #     )
                 elif sales_contract_choice == constante.SALES_UPDATE_OWN_CONTRACT:
                     contract_id = ContractView.get_contract_id()
                     # SalesContractView.show_sales_update_contract_menu()
@@ -93,7 +94,10 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "sales")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -110,5 +114,8 @@ class SalesController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "sales")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return

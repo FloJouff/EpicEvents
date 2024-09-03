@@ -51,7 +51,8 @@ def create_event(
         event_view.EventView.show_update_event_success()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error during registration: {e}")
+        sentry_sdk.set_tag("controller", "event")
+        sentry_sdk.capture_message(f"Error during registration: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -90,7 +91,8 @@ def update_event(
         event_view.EventView.show_update_event_success()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating event: {e}")
+        sentry_sdk.set_tag("controller", "event")
+        sentry_sdk.capture_message(f"Error updating event: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -132,7 +134,8 @@ def update_assigned_event(
         event_view.EventView.show_update_event_success()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating event: {e}")
+        sentry_sdk.set_tag("controller", "event")
+        sentry_sdk.capture_message(f"Error updating event: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -152,7 +155,8 @@ def delete_event(event_id, current_user_role_id):
         event_view.EventView.show_delete_event_success(event_id)
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error deleting event: {e}")
+        sentry_sdk.set_tag("controller", "event")
+        sentry_sdk.capture_message(f"Error deleting event: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -172,7 +176,8 @@ def update_no_support_event(user_id, event_id, support_id):
         event_view.EventView.show_new_support_affected()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating event: {e}")
+        sentry_sdk.set_tag("controller", "event")
+        sentry_sdk.capture_message(f"Error updating event: {e}", level="error")
         session.rollback()
         return False
     finally:

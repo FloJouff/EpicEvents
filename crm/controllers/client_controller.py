@@ -40,7 +40,8 @@ def create_client(
         client_view.ClientView.show_create_client_success_message()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error during registration: {e}")
+        sentry_sdk.set_tag("controller", "client")
+        sentry_sdk.capture_message(f"Error during registration: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -88,7 +89,8 @@ def update_client(
         client_view.ClientView.show_update_client_success_message()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating user: {e}")
+        sentry_sdk.set_tag("controller", "client")
+        sentry_sdk.capture_message(f"Error updating client: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -109,7 +111,8 @@ def update_client_sales(user_id, client_id, contact_id, current_user_role_id):
         client_view.ClientView.show_update_client_contact_id()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating user: {e}")
+        sentry_sdk.set_tag("controller", "client")
+        sentry_sdk.capture_message(f"Error updating client: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -129,7 +132,8 @@ def delete_client(client_id, current_user_role_id):
         client_view.ClientView.show_delete_client_success_message()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error deleting client: {e}")
+        sentry_sdk.set_tag("controller", "client")
+        sentry_sdk.capture_message(f"Error deleting client: {e}", level="error")
         session.rollback()
         return False
     finally:

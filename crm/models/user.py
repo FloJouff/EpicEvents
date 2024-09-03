@@ -114,9 +114,9 @@ class User(Base):
             return False
 
     @staticmethod
-    def decode_token(self):
+    def decode_token(token):
         decoded_token = jwt.decode(
-                self.token, JWT_SECRET, algorithms=[JWT_ALGORITHM]
+                token, JWT_SECRET, algorithms=[JWT_ALGORITHM]
             )
         return decoded_token
 # INSERT INTO users (`name`, `firstname`, `email`, `role_id`)

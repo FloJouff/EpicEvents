@@ -8,7 +8,7 @@ def validate_email(email):
     if re.match(email_regex, email):
         return True
     else:
-        print("[bold red]Invalid email[/bold red]")
+        print("[bold red]Invalid email format. Please try again.[/bold red]")
 
 
 def validate_date(date_text):
@@ -56,4 +56,13 @@ def validate_id(id_input):
         return True
     else:
         print("[bold red]Invalid ID. Must contain only digits.[/bold red]")
+        return False
+
+
+def validate_number(cost):
+    id_regex = r"^\d+$"
+    if re.match(id_regex, cost):
+        return True
+    else:
+        print("[bold red]Invalid cost. Must contain only digits.[/bold red]")
         return False

@@ -54,7 +54,10 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "management")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -86,7 +89,10 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "management")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -111,7 +117,10 @@ class ManagementController:
                         UserView.show_delete_success_message(user_id_to_delete)
                     else:
                         UserView.show_delete_error_message()
-                        sentry_sdk.capture_message(UserView.show_delete_error_message())
+                        sentry_sdk.set_tag("controller", "management")
+                        sentry_sdk.capture_message(
+                            UserView.show_delete_error_message(), level="error"
+                        )
                 elif user_choice == "0":
                     break
         else:
@@ -135,7 +144,10 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "management")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -159,7 +171,10 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "management")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -178,5 +193,8 @@ class ManagementController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "management")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return

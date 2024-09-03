@@ -33,10 +33,12 @@ def create_user(
         session.add(new_user)
         session.commit()
         UserView.show_create_user_success()
+        sentry_sdk.set_tag("controller", "user")
         sentry_sdk.capture_message(f"User created : {name}", level="info")
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error during registration: {e}")
+        sentry_sdk.set_tag("controller", "user")
+        sentry_sdk.capture_message(f"Error during registration: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -70,10 +72,12 @@ def update_user(
 
         session.commit()
         UserView.show_update_user_success()
+        sentry_sdk.set_tag("controller", "user")
         sentry_sdk.capture_message(f"User updated : {name}", level="info")
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating user: {e}")
+        sentry_sdk.set_tag("controller", "user")
+        sentry_sdk.capture_message(f"Error updating user: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -97,7 +101,8 @@ def change_password(user_id, old_password, new_password):
         UserView.show_password_change_successfully()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating user's password: {e}")
+        sentry_sdk.set_tag("controller", "user")
+        sentry_sdk.capture_message(f"Error updating user's password: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -115,10 +120,12 @@ def delete_user(user_id, current_user_role_id):
         session.delete(user)
         session.commit()
         UserView.show_delete_success_message(user_id)
+        sentry_sdk.set_tag("controller", "user")
         sentry_sdk.capture_message(f"User deleted : {user_id}", level="info")
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error deleting user: {e}")
+        sentry_sdk.set_tag("controller", "user")
+        sentry_sdk.capture_message(f"Error deleting user: {e}", level="error")
         session.rollback()
         return False
     finally:

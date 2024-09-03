@@ -62,7 +62,10 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "access")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -90,7 +93,10 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "access")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -118,7 +124,10 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "access")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -149,6 +158,7 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
+            sentry_sdk.set_tag("controller", "access")
             sentry_sdk.capture_message(MainView.show_unauthorized_access())
             return
 
@@ -176,5 +186,8 @@ class AdminController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "access")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return

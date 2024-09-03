@@ -48,7 +48,8 @@ def create_contract(
         ContractView.show_create_contract_success()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error during registration: {e}")
+        sentry_sdk.set_tag("controller", "contract")
+        sentry_sdk.capture_message(f"Error during registration: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -79,6 +80,7 @@ def update_contract(
             contract.remain_amount = remain_amount
         if is_signed:
             contract.is_signed = True
+            sentry_sdk.set_tag("controller", "contract")
             sentry_sdk.capture_message(
                 f"Contract signed : {contract_id}, client ID : {client_id}", level="info"
             )
@@ -87,7 +89,8 @@ def update_contract(
         ContractView.show_update_contract_success()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating contract: {e}")
+        sentry_sdk.set_tag("controller", "contract")
+        sentry_sdk.capture_message(f"Error updating contract: {e}", level="error")
         session.rollback()
         return False
     finally:
@@ -121,6 +124,7 @@ def update_own_contract(
                 contract.remain_amount = remain_amount
             if is_signed:
                 contract.is_signed = True
+                sentry_sdk.set_tag("controller", "contract")
                 sentry_sdk.capture_message(
                     f"Contract signed : {contract_id}, client ID : {Contract.client_id}",
                     level="info",
@@ -133,7 +137,8 @@ def update_own_contract(
         ContractView.show_update_contract_success()
         return True
     except Exception as e:
-        sentry_sdk.capture_message(f"Error updating contract: {e}")
+        sentry_sdk.set_tag("controller", "contract")
+        sentry_sdk.capture_message(f"Error updating contract: {e}", level="error")
         session.rollback()
         return False
     finally:

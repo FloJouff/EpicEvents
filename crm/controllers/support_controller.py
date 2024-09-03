@@ -45,7 +45,10 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "support")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -59,7 +62,10 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "support")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -75,7 +81,10 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "support")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return
 
     @staticmethod
@@ -94,5 +103,8 @@ class SupportController:
                     break
         else:
             MainView.show_unauthorized_access()
-            sentry_sdk.capture_message(MainView.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "support")
+            sentry_sdk.capture_message(
+                MainView.show_unauthorized_access(), level="warning"
+            )
             return

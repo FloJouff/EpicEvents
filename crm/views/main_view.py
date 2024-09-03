@@ -6,6 +6,7 @@ from rich.console import Console
 from rich.padding import Padding
 from rich.text import Text
 from rich.theme import Theme
+from validators import validate_email
 
 
 custom_theme = Theme(
@@ -36,7 +37,11 @@ class MainView:
         return console.input("[bold #a575ef]Select an option: [/bold #a575ef]")
 
     def get_login_credentials(self):
-        email = console.input("[bold #ff8133] Email: [/bold #ff8133]")
+        # email = console.input("[bold #ff8133] Email: [/bold #ff8133]")
+        while True:
+            email = console.input("[bold #ff8133]Email : [/bold #ff8133]").strip()
+            if validate_email(email):
+                break
         prompt = Text("Password: ", style="bold #ff8133")
         console.print(prompt, end="")
         password = getpass.getpass("")

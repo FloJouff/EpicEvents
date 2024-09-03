@@ -5,7 +5,7 @@ from rich.padding import Padding
 from rich.console import Console
 from rich.theme import Theme
 from rich.table import Table
-from validators import validate_id
+from validators import validate_id, validate_number
 
 
 custom_theme = Theme(
@@ -241,15 +241,31 @@ class ContractView:
 
     @staticmethod
     def get_new_contract_remain_cost():
-        return console.input(
-            "[bold #03d01a]Enter the new outstanding amount of this contract:[/bold #03d01a] "
-        )
+        while True:
+            remain_cost = console.input(
+                "[bold #03d01a]Enter the new outstanding amount of this contract:[/bold #03d01a]"
+            )
+            if validate_number(remain_cost):
+                break
+        return int(remain_cost)
 
     @staticmethod
     def get_new_status():
-        return console.input(
-            "[bold #03d01a]If contract is signed, press [bold yellow] 'Y' [/bold yellow] or [bold yellow] 'y' [/bold yellow]: [/bold #03d01a]"
-        )
+        while True:
+            response = (
+                console.input(
+                    "[bold #03d01a]If contract is signed, press [bold yellow] 'Y' [/bold yellow] or [bold yellow] 'y' [/bold yellow]: [/bold #03d01a]"
+                )
+                .strip()
+                .lower()
+            )
+
+            if response in ["y"]:
+                return response
+            else:
+                console.print(
+                    "[bold red]Invalid input. Please enter 'Y' or 'y'.[/bold red]"
+                )
 
     @staticmethod
     def get_new_contract_contact_id():
@@ -263,9 +279,12 @@ class ContractView:
 
     @staticmethod
     def get_contract_id_for_deletion():
-        contract_id = console.input(
-            "[bold #03d01a]Enter the Contract ID to delete: [/bold #03d01a]"
-        )
+        while True:
+            contract_id = console.input(
+                "[bold #03d01a]Enter the Contract ID to delete: [/bold #03d01a]"
+            )
+            if validate_id(contract_id):
+                break
         return str(contract_id)
 
     @staticmethod

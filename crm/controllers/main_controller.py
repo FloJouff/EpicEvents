@@ -49,7 +49,7 @@ class MainController:
         email, password = self.view.get_login_credentials()
         self.token, self.role_id = User.authenticate(email, password)
         if self.token:
-            decoded_token = User.decode_token(self)
+            decoded_token = User.decode_token(self.token)
             self.user_id = decoded_token["user_id"]
             self.token_expiry = datetime.fromtimestamp(decoded_token["exp"])
             self.view.show_login_success()
@@ -73,7 +73,10 @@ class MainController:
                 )
         else:
             self.view.show_unauthorized_access()
-            sentry_sdk.capture_message(self.view.show_unauthorized_access())
+            sentry_sdk.set_tag("controller", "access")
+            sentry_sdk.capture_message(
+                self.view.show_unauthorized_access(), level="warning"
+            )
             self.login()
 
     def handle_disconnection(self):
