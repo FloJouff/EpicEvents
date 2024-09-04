@@ -1,8 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from crm.models.role import Role
 from dotenv import load_dotenv
+from sqlalchemy import Column, Integer, Enum
+from sqlalchemy.orm import relationship
 import os
+from sqlalchemy.orm import declarative_base
+
+Base = declarative_base()
 
 load_dotenv()
 
@@ -21,6 +25,31 @@ DEFAULT_ROLES = [
     {"role_id": 3, "role_name": "SUPPORT"},
     {"role_id": 4, "role_name": "ADMIN"}
 ]
+
+
+class Role(Base):
+    __tablename__ = "roles"
+
+    role_id = Column("role_id", Integer, primary_key=True)
+    role = Column(
+        "role", Enum("gestion", "commercial", "support", "admin"), unique=True
+    )
+    users = relationship("User", back_populates="role")
+
+    def __init__(self, role_id, role):
+        """Role constructor
+
+        Args:
+            role_id(int):
+            role (Enum): event's contract's id
+
+
+        """
+        self.role_id = role_id
+        self.role = role
+
+    def __repr__(self):
+        return f"Role: {self.role}"
 
 
 def initialize_roles():

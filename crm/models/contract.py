@@ -75,4 +75,3 @@ class Contract(Base):
         return f"Contract: {self.contract_id} from client{
             self.client_id}. User in charge: {
                 self.commercial_id}"
-

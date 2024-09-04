@@ -3,6 +3,11 @@ from Constantes.permissions import PERMISSIONS, Role
 
 
 def requires_permission(task):
+    """Decorator to give permissions to user
+
+    Args:
+        task (str): task needed permission
+    """
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):

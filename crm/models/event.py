@@ -7,7 +7,6 @@ from sqlalchemy import (
 )
 from crm.models import Base
 from sqlalchemy.orm import relationship
-from crm.models.contract import Contract
 
 
 class Event(Base):
@@ -36,7 +35,6 @@ class Event(Base):
     notes = Column("notes", String(255))
 
     contract = relationship("Contract", back_populates="events")
-    # user = relationship("User", back_populates="events")
     client = relationship("Client")
 
     def __init__(
@@ -74,4 +72,7 @@ class Event(Base):
         self.notes = notes
 
     def __repr__(self):
-        return f"Event: event_id {self.event_id} from client :(id){self.client_id}. Support in charge: (id){self.support_id}"
+        return f"Event: event_id {
+            self.event_id} from client :(id){
+                self.client_id}. Support in charge: (id){
+                    self.support_id}"

@@ -117,4 +117,3 @@ class User(Base):
                 token, JWT_SECRET, algorithms=[JWT_ALGORITHM]
             )
         return decoded_token
-
