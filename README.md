@@ -1,6 +1,7 @@
 ![Python](https://img.shields.io/badge/python-3.12.x-green.svg)
 ![Pytest](https://img.shields.io/badge/Pytest-8.2.x-blue.svg)
 ![SQLAlchemy](https://img.shields.io/badge/SQLalchemy-2.0.x-red.svg)
+![Sentry](https://img.shields.io/badge/Sentry-2.13.x-orange.svg)
 
 # CRM System
 
@@ -30,7 +31,7 @@ Before running this project, ensure you have the following installed:
 
 ```bash
 git clone https://github.com/FloJouff/EpicEvents
-cd crm
+
 ```
 
 ### 2. Create and Activate Virtual Environment
@@ -75,26 +76,26 @@ JWT_ALGORITHM =HS256
 
 SENTRY_KEY='your link to your sentry page'
 ```
+You can obtain your Sentry ‘key’ by creating an account on the application's website.
 
 ### 6. Configure db for admin
 
-Initialize Role model in database:
-
+You can initialize your database with the datas in the sql file :
 ```bash
-python initialize_role.py
-```
+ scripts/Initialize.sql
+ ```
 
-Then create a superuser, Admin:
-
-```bash
-python create_admin.py
-```
-
-or
-
-You can initialize your database with the sql file : Initialize.sql
 In this file, you can modify the information relating to the admin profile you wish to create.
-You should also remember to hash the password you are going to create using hashpswd.py, replacing the default password with the one you want to use.
+You should also remember to hash the password you are going to create using hachpswd.py:
+
+```bash
+python hachpswd.py
+``` 
+(Before running this program, remember to replace the default user password ('adminpassword') given in the script with the one you want to use)
+
+Execute the commands indicated in this file after creating your database as explained above using the MySQL Command Line Client.
+
+This will allow you to define the ‘Role’ table and the ‘User’ table in order to create your ‘Admin’ user.
 
 ### 7. Run the Application
 
@@ -104,6 +105,7 @@ finally, you can run the application:
 ```bash
 python main.py
 ```
+Of course, your first connection must be made using the Admin profile you created earlier.
 
 Using the crm is as easy as clicking on the command prompts in the various menus.
 The menus displayed depend on the role of the logged-in user.
