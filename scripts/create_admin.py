@@ -18,6 +18,14 @@ session = Session()
 
 
 def create_admin(name, firstname, email, password):
+    """Create a new admin profil in database
+
+    Args:
+        name (str): name
+        firstname (str): firstname
+        email (str): email
+        password (str): password
+    """
     ph = PasswordHasher()
 
     admin_role = session.query(Role).filter_by(role_id=4).first()
@@ -36,7 +44,7 @@ def create_admin(name, firstname, email, password):
 
     session.add(admin_user)
     session.commit()
-    print(f"Administrateur {name} créé avec succès !")
+    print(f"Administrateur {name} created successfully !")
 
 
 if __name__ == "__main__":

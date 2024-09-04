@@ -32,6 +32,13 @@ import Constantes.constantes as constante
 class AdminController:
     @staticmethod
     def handle_admin_menu(user_id, role_id, token):
+        """Controller displaying admin menus according to the choices made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 choice = AdminView.show_admin_menu()
@@ -70,6 +77,13 @@ class AdminController:
 
     @staticmethod
     def update_user_menu(user_id, token, role_id):
+        """Controller displaying update menu's options
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 update_choice = UserView.show_update_menu()
@@ -101,6 +115,13 @@ class AdminController:
 
     @staticmethod
     def admin_client_menu(user_id, role_id, token):
+        """Controller displaying admin client's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 adm_client_choice = AdminClientView.show_admin_client_menu()
@@ -132,6 +153,13 @@ class AdminController:
 
     @staticmethod
     def admin_contract_menu(user_id, role_id, token):
+        """Controller displaying admin contract's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 adm_contract_choice = AdminContractView.show_admin_contract_menu()
@@ -145,6 +173,8 @@ class AdminController:
                     update_contract_menu(
                         user_id, contract_id, current_user_role_id=role_id
                     )
+                # This function is commented because it shouldn't be possible to delete a contract.
+                # but if needed, the function exists
                 # elif adm_contract_choice == constante.ADMIN_DELETE_CONTRACT:
                 #     contract_id_to_delete = ContractView.get_contract_id_for_deletion()
                 #     success = delete_contract(
@@ -164,6 +194,13 @@ class AdminController:
 
     @staticmethod
     def admin_event_menu(user_id, role_id, token):
+        """Controller displaying admin event's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 adm_event_choice = AdminEventView.show_admin_event_menu()

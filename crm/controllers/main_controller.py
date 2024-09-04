@@ -23,6 +23,7 @@ class MainController:
         self.view = MainView()
 
     def main_menu(self):
+        """First menu"""
         while True:
             if self.token and self.token_expiry:
                 if datetime.now() >= self.token_expiry - timedelta(minutes=5):
@@ -42,10 +43,12 @@ class MainController:
                 self.view.show_invalid_option_message()
 
     def handle_authentication(self):
+        """If user is not already connected (has no token), then show login menu"""
         if not self.token:
             self.login()
 
     def login(self):
+        """Login function"""
         email, password = self.view.get_login_credentials()
         self.token, self.role_id = User.authenticate(email, password)
         if self.token:
@@ -58,6 +61,7 @@ class MainController:
             self.view.show_login_failure()
 
     def handle_role_specific_actions(self):
+        """function supporting menu display depending on the role of the connected user"""
         if User.authorize(self.token, self.role_id):
             if self.role_id == int(Role.ADMIN.value):
                 AdminController.handle_admin_menu(self.user_id, self.role_id, self.token)

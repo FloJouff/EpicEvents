@@ -10,12 +10,18 @@ import sentry_sdk
 
 
 def view_contract():
+    """Search all contracts in database"""
     session = Session()
     contract_list = session.query(Contract).all()
     ContractView.display_contract_list(contract_list)
 
 
 def view_user_own_contracts(user_id):
+    """Search contracts in database for user as assigned sales staff
+
+    Args:
+        user_id (int): connected user's ID
+    """
     session = Session()
     user_contract_list = (
         session.query(Contract).filter_by(commercial_id=user_id).all()
@@ -30,6 +36,15 @@ def create_contract(
     total_amount,
     current_user_role_id,
 ):
+    """Create a new contract
+
+    Args:
+        client_id (int): new contract's client's ID
+        commercial_id (int): new contract's commercial's ID
+        total_amount (int): new contract's total cost
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
 
@@ -66,6 +81,17 @@ def update_contract(
     remain_amount=None,
     is_signed=None,
 ):
+    """Update an existing contract
+
+    Args:
+        user_id (int): connected user's ID
+        contract_id(int): contract's ID
+        current_user_role_id (int): role of connected user
+        client_id (int, optional): client's ID. Defaults to None.
+        commercial_id (int, optional): contract's new commercial's ID. Defaults to None.
+        remain_amount (int, optional): total oustanding cost. Defaults to None.
+        is_signed (bool, optional): Has contract be signed. Defaults to None.
+    """
     session = Session()
     try:
         contract = session.query(Contract).filter_by(contract_id=contract_id).first()
@@ -107,6 +133,17 @@ def update_own_contract(
     remain_amount=None,
     is_signed=None,
 ):
+    """Sales option to update their own contracts
+    Args:
+        user_id (int): connected user's ID
+        contract_id(int): contract's ID
+        current_user_role_id (int): role of connected user
+        client_id (int, optional): client's ID. Defaults to None.
+        commercial_id (int, optional): contract's new commercial's ID. Defaults to None.
+        remain_amount (int, optional): total oustanding cost. Defaults to None.
+        is_signed (bool, optional): Has contract be signed. Defaults to None.
+
+    """
     session = Session()
 
     try:
@@ -166,12 +203,14 @@ def update_own_contract(
 
 
 def view_unsigned_contract():
+    """Search all unsigned contracts in database"""
     session = Session()
     unsigned_contract_list = session.query(Contract).filter_by(is_signed=False).all()
     ContractView.display_contract_list(unsigned_contract_list)
 
 
 def view_unpaid_contract():
+    """Search all unpaid contracts in database"""
     session = Session()
     unpaid_contract_list = (
         session.query(Contract).filter(Contract.remain_amount != 0).all()
@@ -181,6 +220,13 @@ def view_unpaid_contract():
 
 @requires_permission("update_contract")
 def update_contract_menu(user_id, contract_id, current_user_role_id):
+    """Controller displaying contract update menu according to the choice made by the connected user
+
+    Args:
+        user_id (int): connected user's ID
+        contract_id (int):  contract's ID
+        current_user_role_id (int): role of connected user to check permission
+    """
     while True:
         update_contract_choice = contract_view.ContractView.show_update_contract_menu()
         if update_contract_choice == constante.CONTRACT_UPDATE_CLIENT:
@@ -222,6 +268,14 @@ def update_contract_menu(user_id, contract_id, current_user_role_id):
 
 @requires_permission("update_own_contract")
 def update_own_contract_menu(user_id, contract_id, role_id):
+    """Controller displaying contract update menu according to the choice made by the connected user
+    the user must be sales staff and be assigned to this contract
+
+    Args:
+        user_id (int): connected user's ID
+        contract_id (int):  contract's ID
+        current_user_role_id (int): role of connected user to check permission
+    """
     while True:
         update_contract_choice = (
             contract_view.SalesContractView.show_sales_update_contract_menu()

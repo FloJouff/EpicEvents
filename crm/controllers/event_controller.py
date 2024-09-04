@@ -7,18 +7,21 @@ import sentry_sdk
 
 
 def view_event():
+    """Search all events in database"""
     session = Session()
     event_list = session.query(Event).all()
     event_view.EventView.display_event_list(event_list)
 
 
 def view_user_own_event(user_id):
+    """Search all event assigned to connected user in database"""
     session = Session()
     user_event_list = session.query(Event).filter_by(support_id=user_id).all()
     event_view.EventView.display_event_list(user_event_list)
 
 
 def view_no_support_event():
+    """Search all events in database with no assigned support"""
     session = Session()
     no_support_event_list = session.query(Event).filter_by(support_id=None).all()
     event_view.EventView.display_event_list(no_support_event_list)
@@ -34,6 +37,18 @@ def create_event(
     attendees,
     current_user_role_id,
 ):
+    """Create a new event
+
+    Args:
+        client_id (int): client's id related to this event
+        contract_id (int): contract's id related to this event
+        start_date (date): new event start date
+        end_date (date): new event end date
+        location (str): new event adress
+        attendees (int): new event expected attendees
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
 
@@ -70,6 +85,19 @@ def update_event(
     attendees=None,
     notes=None,
 ):
+    """Update an existing event
+
+    Args:
+        user_id (int): connected user's ID
+        event_id (int): Event's ID
+        current_user_role_id (int): role of connected user
+        start_date (date, optional): New start date. Defaults to None.
+        end_date (date, optional): New end date. Defaults to None.
+        location (str, optional): New adress. Defaults to None.
+        attendees (int, optional): New number of attendees. Defaults to None.
+        notes (str, optional): additional notes for/from support. Defaults to None.
+
+    """
     session = Session()
     try:
         event = session.query(Event).filter_by(event_id=event_id).first()
@@ -110,6 +138,19 @@ def update_assigned_event(
     attendees=None,
     notes=None,
 ):
+    """Update an existing event for assigned support
+
+    Args:
+        user_id (int): connected user's ID
+        event_id (int): Event's ID
+        current_user_role_id (int): role of connected user
+        start_date (date, optional): New start date. Defaults to None.
+        end_date (date, optional): New end date. Defaults to None.
+        location (str, optional): New adress. Defaults to None.
+        attendees (int, optional): New number of attendees. Defaults to None.
+        notes (str, optional): additional notes for/from support. Defaults to None.
+
+    """
     session = Session()
     try:
         event = session.query(Event).filter_by(event_id=event_id).first()
@@ -144,6 +185,13 @@ def update_assigned_event(
 
 @requires_permission("delete_event")
 def delete_event(event_id, current_user_role_id):
+    """Delete an event
+
+    Args:
+        event_id (int): event's ID
+        current_user_role_id (int): Role of connected user
+
+    """
     session = Session()
     try:
         event = session.query(Event).filter_by(event_id=event_id).first()
@@ -164,6 +212,14 @@ def delete_event(event_id, current_user_role_id):
 
 
 def update_no_support_event(user_id, event_id, support_id):
+    """Assign a new support to an event with no support
+
+    Args:
+        user_id (int): connected user's ID
+        event_id (int): event's ID
+        support_id (int): new support's ID
+
+    """
     session = Session()
     try:
         event = session.query(Event).filter_by(event_id=event_id).first()
@@ -185,6 +241,13 @@ def update_no_support_event(user_id, event_id, support_id):
 
 
 def update_event_menu(user_id, event_id, current_user_role_id):
+    """Controller displaying event update menu according to the choice made by the connected user
+
+    Args:
+        user_id (int): connected user's ID
+        event_id (int):  event's ID
+        current_user_role_id (int): role of connected user to check permission
+    """
     while True:
         update_event_choice = event_view.EventView.show_update_event_menu()
         if update_event_choice == constante.EVENT_UPDATE_START_DATE:
@@ -211,6 +274,14 @@ def update_event_menu(user_id, event_id, current_user_role_id):
 
 
 def update_event_support_menu(user_id, event_id, current_user_role_id):
+    """Controller displaying event update menu according to the choice made by the connected user
+    the user must be support staff and be assigned to this event
+
+    Args:
+        user_id (int): connected user's ID
+        event_id (int):  event's ID
+        current_user_role_id (int): role of connected user to check permission
+    """
     while True:
         update_event_choice = event_view.EventView.show_update_event_menu()
         if update_event_choice == constante.EVENT_UPDATE_START_DATE:

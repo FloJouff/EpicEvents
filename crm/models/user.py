@@ -33,7 +33,6 @@ class User(Base):
     )
 
     role = relationship("Role", back_populates="users")
-    # events = relationship("User", back_populates="user")
 
     def __init__(self, name, firstname, email, password, role_id):
         """Player constructor
@@ -50,7 +49,7 @@ class User(Base):
         self.firstname = firstname
         self.email = email
         self.role_id = role_id
-        # Si le mot de passe est déjà haché, ne pas le hacher à nouveau
+
         if not password.startswith("$argon2id$"):
             self.hash_password(password)
         else:
@@ -61,7 +60,7 @@ class User(Base):
         self.password = ph.hash(password)
 
     def check_password(self, password):
-        """Vérifie que le mot de passe correspond au hash"""
+        """Check if password matches the hash"""
         try:
             return ph.verify(self.password, password)
         except exceptions.VerifyMismatchError:
@@ -91,7 +90,6 @@ class User(Base):
                 }
                 token = jwt.encode(payload, JWT_SECRET, JWT_ALGORITHM)
                 UserView.display_welcome_message(user.name, user.firstname)
-                #print(f"\n [green]Bienvenue [/green] [bold] {user.name} {user.firstname} [/bold]")
                 return token, user.role_id
 
             except VerifyMismatchError:
@@ -119,5 +117,4 @@ class User(Base):
                 token, JWT_SECRET, algorithms=[JWT_ALGORITHM]
             )
         return decoded_token
-# INSERT INTO users (`name`, `firstname`, `email`, `role_id`)
-# VALUES ('Admin', 'admin', 'admin@test.com', '4');
+

@@ -25,6 +25,13 @@ class SupportController:
 
     @staticmethod
     def handle_support_menu(user_id, role_id, token):
+        """Controller displaying support main menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 choice = SupportView.show_support_menu()
@@ -53,6 +60,13 @@ class SupportController:
 
     @staticmethod
     def support_client_menu(user_id, role_id, token):
+        """Controller displaying support client's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 support_client_choice = SupportClientView.show_support_client_menu()
@@ -70,6 +84,13 @@ class SupportController:
 
     @staticmethod
     def support_contract_menu(user_id, role_id, token):
+        """Controller displaying support contract's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 support_contract_choice = (
@@ -89,6 +110,13 @@ class SupportController:
 
     @staticmethod
     def support_event_menu(user_id, role_id, token):
+        """Controller displaying support event's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 support_event_choice = SupportEventView.show_support_event_menu()

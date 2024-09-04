@@ -19,6 +19,7 @@ console = Console(theme=custom_theme)
 class AdminContractView:
     @staticmethod
     def show_admin_contract_menu():
+        """Display contract menu for admin user"""
         console.print(
             Panel.fit(
                 Padding(
@@ -46,6 +47,7 @@ class AdminContractView:
 class ManagementContractView:
     @staticmethod
     def show_management_contract_menu():
+        """Display contract menu for management user"""
         console.print(
             Panel.fit(
                 Padding(
@@ -72,6 +74,7 @@ class ManagementContractView:
 class SalesContractView:
     @staticmethod
     def show_sales_contract_menu():
+        """Display contract menu for sales users"""
         console.print(
             Panel.fit(
                 Padding(
@@ -83,9 +86,9 @@ class SalesContractView:
         console.print(
             Padding(f"{constante.SALES_VIEW_CONTRACT}. View contracts list", (0, 4))
         )
-        console.print(
-            Padding(f"{constante.SALES_CREATE_CONTRACT}. Create new contract", (0, 4))
-        )
+        # console.print(
+        #     Padding(f"{constante.SALES_CREATE_CONTRACT}. Create new contract", (0, 4))
+        # )
         console.print(
             Padding(f"{constante.SALES_UPDATE_OWN_CONTRACT}. Update a contrat", (0, 4))
         )
@@ -110,6 +113,7 @@ class SalesContractView:
 
     @staticmethod
     def show_sales_update_contract_menu():
+        """Display update contract menu for sales users"""
         console.print(
             Panel.fit(
                 Padding(
@@ -140,6 +144,7 @@ class SalesContractView:
 class SupportContractView:
     @staticmethod
     def show_support_contract_menu():
+        """Display contract menu for support users"""
         console.print(
             Panel.fit(
                 Padding(
@@ -158,6 +163,7 @@ class SupportContractView:
 class ContractView:
     @staticmethod
     def update_contract_menu():
+        """Display update contract menu for admin or management users"""
         console.print(
             Panel.fit(
                 Padding(
@@ -187,6 +193,7 @@ class ContractView:
 
     @staticmethod
     def get_new_contract_info():
+        """Display input lignes to get new contract informations"""
         while True:
             client_id = console.input("[bold #03d01a]Client's id :[/bold #03d01a]")
             if validate_id(client_id):
@@ -200,6 +207,7 @@ class ContractView:
 
     @staticmethod
     def show_update_contract_menu():
+        """Display update contract menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -231,6 +239,7 @@ class ContractView:
 
     @staticmethod
     def get_new_contract_client_id():
+        """Display input ligne to get new contract client's ID informations"""
         while True:
             client_id = console.input(
                 "[bold #03d01a]Enter new client_id: [/bold #03d01a]"
@@ -241,6 +250,7 @@ class ContractView:
 
     @staticmethod
     def get_new_contract_remain_cost():
+        """Display input ligne to get new contract outstanding cost"""
         while True:
             remain_cost = console.input(
                 "[bold #03d01a]Enter the new outstanding amount of this contract:[/bold #03d01a]"
@@ -251,6 +261,7 @@ class ContractView:
 
     @staticmethod
     def get_new_status():
+        """Display input ligne to confirm update of contract status"""
         while True:
             response = (
                 console.input(
@@ -269,6 +280,7 @@ class ContractView:
 
     @staticmethod
     def get_new_contract_contact_id():
+        """Display input ligne to get new contract contact's ID"""
         while True:
             commercial_id = console.input(
                 "[bold #03d01a]Enter sales in charge of this contract: [/bold #03d01a]"
@@ -279,6 +291,7 @@ class ContractView:
 
     @staticmethod
     def get_contract_id_for_deletion():
+        """Displays the command line for entering the id of the contract to be deleted"""
         while True:
             contract_id = console.input(
                 "[bold #03d01a]Enter the Contract ID to delete: [/bold #03d01a]"
@@ -289,24 +302,29 @@ class ContractView:
 
     @staticmethod
     def get_contract_id():
+        """Displays the command line for entering the id of the contract"""
         return console.input("[bold #03d01a]Enter contract_id : [/bold #03d01a]")
 
     @staticmethod
     def show_create_contract_success():
+        """Displays message to confirm contract has been created successfully"""
         return console.print("[yellow] Contract registered successfully. [/yellow]")
 
     @staticmethod
     def show_update_contract_success():
+        """Displays message to confirm contract has been updated successfully"""
         return console.print("[yellow]Contract updated successfully[/yellow]")
 
     @staticmethod
     def show_update_contract_noaccess():
+        """Displays message to inform a sales thzt he is not in charge of this contract"""
         return console.print(
             "[italic red] You're not in charge of this contract. You are not allowed to update it.[/italic red]"
         )
 
     @staticmethod
     def display_contract_list(contract_list):
+        """Displays contract's list"""
         table = Table(title="List of contracts")
 
         table.add_column("ID", style="cyan", justify="right")
@@ -332,10 +350,12 @@ class ContractView:
 
     @staticmethod
     def contract_not_found():
+        """Displays error message if contract does not exists or is not found"""
         return console.print("[italic red]Contract not found.[/italic red]")
 
     @staticmethod
     def display_unsold_contract_list(contract_list):
+        """Displays list of unsold contracts"""
         table = Table(title="List of unsold contracts")
 
         table.add_column("ID", style="cyan", justify="right")
@@ -361,4 +381,5 @@ class ContractView:
 
     @staticmethod
     def show_invalid_answer():
+        """Displays an error message if a user input does not correspond to the expected format"""
         return console.print("[italic red]Invalid answer. Please try again[/italic red]")

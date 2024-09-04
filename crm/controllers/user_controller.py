@@ -12,6 +12,17 @@ ph = PasswordHasher()
 def create_user(
     name, firstname, email, password, role_id, current_user_role_id
 ):
+    """Create a new user
+
+    Args:
+        name (str): new user's name
+        firstname (str): new user's firstname
+        email (str): new user's email
+        password (str): new user's password
+        role_id (int): new user's role_id
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
 
@@ -46,6 +57,7 @@ def create_user(
 
 
 def view_users():
+    """Query to get all users in database"""
     session = Session()
     user_list = session.query(User).all()
     UserView.display_user_list(user_list)
@@ -55,6 +67,19 @@ def view_users():
 def update_user(
     user_id, current_user_role_id, name=None, firstname=None, email=None, password=None
 ):
+    """Update existing user
+
+    Args:
+        user_id (int): user id to be updated
+        current_user_role_id (int): role of connected user
+        name (str, optional): new user's name. Defaults to None.
+        firstname (str, optional): new user firstname. Defaults to None.
+        email (str, optional): new user email. Defaults to None.
+        password (str, optional): new user password. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """
     session = Session()
     try:
         user = session.query(User).filter_by(user_id=user_id).first()
@@ -85,6 +110,15 @@ def update_user(
 
 
 def change_password(user_id, old_password, new_password):
+    """function for changing the user's password
+
+    Args:
+        user_id (int): connected user
+        old_password (str): old_password
+        new_password (str): new_password
+
+
+    """
     session = Session()
     try:
         user = session.query(User).filter_by(user_id=user_id).first()
@@ -111,6 +145,13 @@ def change_password(user_id, old_password, new_password):
 
 @requires_permission("delete_user")
 def delete_user(user_id, current_user_role_id):
+    """function for deleting a user
+
+    Args:
+        user_id (int): user to be deleted
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
         user = session.query(User).filter_by(user_id=user_id).first()

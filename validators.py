@@ -4,6 +4,7 @@ from rich import print
 
 
 def validate_email(email):
+    """Validate email format"""
     email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     if re.match(email_regex, email):
         return True
@@ -12,6 +13,7 @@ def validate_email(email):
 
 
 def validate_date(date_text):
+    """Validate date is correct"""
     try:
         datetime.strptime(date_text, "%Y-%m-%d")
         return True
@@ -21,6 +23,7 @@ def validate_date(date_text):
 
 
 def validate_phone_number(phone_number):
+    """Validate phone number is made of 10 numbers"""
     phone_regex = r"^\d{10}$"
     if re.match(phone_regex, phone_number):
         return True
@@ -29,6 +32,7 @@ def validate_phone_number(phone_number):
 
 
 def validate_password(password):
+    """Validate password is at least 8 characters"""
     if len(password) >= 8:
         return True
     # if not re.search(r"[A-Z]", password):
@@ -40,6 +44,7 @@ def validate_password(password):
 
 
 def validate_name(name):
+    """Validate that name is only letters, space or hyphens"""
     name_regex = r"^[A-Za-z\s-]{2,50}$"
     if re.match(name_regex, name):
         return True
@@ -51,6 +56,7 @@ def validate_name(name):
 
 
 def validate_id(id_input):
+    """validate that input is only numbers"""
     id_regex = r"^\d+$"
     if re.match(id_regex, id_input):
         return True
@@ -60,6 +66,7 @@ def validate_id(id_input):
 
 
 def validate_number(cost):
+    """Validate that input is only numbers"""
     id_regex = r"^\d+$"
     if re.match(id_regex, cost):
         return True

@@ -1,5 +1,5 @@
 import Constantes.constantes as constante
-from validators import validate_date, validate_id
+from validators import validate_date, validate_id, validate_number
 from rich import print
 from rich.panel import Panel
 from rich.padding import Padding
@@ -18,6 +18,7 @@ console = Console(theme=custom_theme)
 class AdminEventView:
     @staticmethod
     def show_admin_event_menu():
+        """Displays admin's event menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -43,6 +44,7 @@ class AdminEventView:
 class ManagementEventView:
     @staticmethod
     def show_management_event_menu():
+        """Displays management's event menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -73,6 +75,7 @@ class ManagementEventView:
 class SalesEventView:
     @staticmethod
     def show_sales_event_menu():
+        """Displays sales's event menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -92,6 +95,7 @@ class SalesEventView:
 class SupportEventView:
     @staticmethod
     def show_support_event_menu():
+        """Displays support's event menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -116,6 +120,7 @@ class SupportEventView:
 class EventView:
     @staticmethod
     def show_update_event_menu():
+        """Displays event's update menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -148,6 +153,11 @@ class EventView:
 
     @staticmethod
     def get_new_event_info():
+        """Displays input prompts for creating a new event
+
+        Returns:
+            tuple: event's datas
+        """
         while True:
             client_id = console.input("[bold #03d01a]Client's id :  [/bold #03d01a]")
             if validate_id(client_id):
@@ -169,11 +179,19 @@ class EventView:
             if validate_date(end_date):
                 break
         location = console.input("[bold #03d01a]Location : [/bold #03d01a]")
-        attendees = console.input("[bold #03d01a]Attendees : [/bold #03d01a]")
+        while True:
+            attendees = console.input("[bold #03d01a]Attendees: [/bold #03d01a]")
+            if validate_number(attendees):
+                break
         return client_id, contract_id, start_date, end_date, location, attendees
 
     @staticmethod
     def get_new_event_start_date():
+        """Displays input prompts for updating an event's starting date
+
+        Returns:
+            date: start date
+        """
         while True:
             start_date = console.input(
                 "[bold #03d01a]Enter New starting date (YYYY-MM-DD): [/bold #03d01a]"
@@ -183,6 +201,11 @@ class EventView:
 
     @staticmethod
     def get_new_event_end_date():
+        """Displays input prompts for updating an event's ending date
+
+        Returns:
+            date: end date
+        """
         while True:
             end_date = console.input(
                 "[bold #03d01a]Enter New ending date (YYYY-MM-DD): [/bold #03d01a]"
@@ -192,18 +215,43 @@ class EventView:
 
     @staticmethod
     def get_new_location():
+        """Displays input prompts for updating an event's location
+
+        Returns:
+            str: new adress
+        """
         return console.input("[bold #03d01a]Enter new location: [/bold #03d01a]")
 
     @staticmethod
     def get_new_attenddes():
-        return console.input("[bold #03d01a]Enter new attendees: [/bold #03d01a]")
+        """Displays input prompts for updating an event's number of attendees
+
+        Returns:
+            int: new expected attendees
+        """
+        while True:
+            attendees = console.input(
+                "[bold #03d01a]Enter new attendees: [/bold #03d01a]"
+            )
+            if validate_number(attendees):
+                return attendees
 
     @staticmethod
     def get_new_event_notes():
+        """Displays input prompts for updating an event support's notes
+
+        Returns:
+            str: notes
+        """
         return console.input("[bold #03d01a]Enter your notes: [/bold #03d01a]")
 
     @staticmethod
     def get_new_support_id():
+        """Displays input prompts for updating an event new support's ID
+
+        Returns:
+            int: support's ID
+        """
         while True:
             support_id = console.input(
                 "[bold #03d01a]Enter the Support ID for this event: [/bold #03d01a]"
@@ -214,6 +262,11 @@ class EventView:
 
     @staticmethod
     def get_event_id_for_deletion():
+        """Displays input prompts for deleting an event
+
+        Returns:
+            int: event ID
+        """
         while True:
             event_id = console.input(
                 "[bold #03d01a]Enter the event ID to delete:  [/bold #03d01a]"
@@ -224,6 +277,11 @@ class EventView:
 
     @staticmethod
     def get_no_support_event_info():
+        """Displays input prompts for updating an event with no support
+
+        Returns:
+            tuple: event's ID and new support's ID
+        """
         while True:
             event_id = console.input("[bold #03d01a]Event's id : [/bold #03d01a]")
             if validate_id(event_id):
@@ -238,6 +296,11 @@ class EventView:
 
     @staticmethod
     def get_event_id():
+        """Displays input prompts to get an event ID
+
+        Returns:
+            int: event ID
+        """
         while True:
             event_id = console.input("[bold #03d01a]Event's id : [/bold #03d01a]")
             if validate_id(event_id):
@@ -246,40 +309,52 @@ class EventView:
 
     @staticmethod
     def show_delete_event_success(event_id):
+        """Displays successfully deleting an event"""
         return console.print(
             f"[yellow]Event with ID [bold]{event_id}[/bold] has been deleted successfully [/yellow]"
         )
 
     @staticmethod
     def show_delete_event_error():
+        """Displays error message trying to delete an event"""
         return console.print(
             "[italic red]Failed to delete Event. Please try again.[/italic red]"
         )
 
     @staticmethod
     def show_update_event_error():
+        """Displays error message trying to update an event"""
         return console.print(
             "[italic red]Failed to update Event. Please try again.[/italic red]"
         )
 
     @staticmethod
     def show_update_event_success():
+        """Displays successfully updating an event"""
         return console.print("[yellow] Event updated successfully [/yellow]")
 
     @staticmethod
     def show_acces_event_denied():
+        """Displays error message trying to access an event a support_user is not affected to"""
         return console.print(
             "[italic red]Acces denied : you're not assigned to this event.[/italic red]"
         )
 
     @staticmethod
     def show_new_support_affected():
+        """Displays successfully updating a support's ID to an event"""
         return console.print(
             "[yellow] New support affected successfully to this event. [/yellow]"
         )
 
     @staticmethod
     def show_no_support_list(event_list):
+        """Displays List of event with no support
+
+        Args:
+            event_list (list): list of event in database matching the query
+
+        """
         if event_list:
             table = Table(title="List of Events with no support")
 
@@ -312,6 +387,11 @@ class EventView:
 
     @staticmethod
     def display_event_list(event_list):
+        """Displays list of all events in a table
+
+        Args:
+            event_list (list): list of events
+        """
         table = Table(title="List of Events")
 
         table.add_column("ID", style="cyan", justify="right")
@@ -341,4 +421,5 @@ class EventView:
 
     @staticmethod
     def event_not_found():
+        """Displays error message when event does not exist in database"""
         return console.print("[italic red]Event not found.[/italic red]")

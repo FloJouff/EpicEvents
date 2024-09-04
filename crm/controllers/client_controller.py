@@ -8,6 +8,7 @@ import sentry_sdk
 
 
 def view_client():
+    """Query all client in database"""
     session = Session()
     client_list = session.query(Client).all()
     client_view.ClientView.display_client_list(client_list)
@@ -17,6 +18,18 @@ def view_client():
 def create_client(
     name, firstname, email, phone, company, contact_id, current_user_role_id
 ):
+    """Create a new client
+
+    Args:
+        name (str): new client's name
+        firstname (str): new client's firstname
+        email (str): new client's email
+        phone (int): new client's phone number
+        company (str): new client's company name
+        contact_id (int): new client's contact's ID
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
         existing_client = session.query(Client).filter_by(email=email).first()
@@ -49,6 +62,7 @@ def create_client(
 
 
 def view_own_client(user_id):
+    """Query client's list for connected sales user"""
     session = Session()
     user_own_client_list = session.query(Client).filter_by(contact_id=user_id).all()
     client_view.ClientView.display_client_list(user_own_client_list)
@@ -66,6 +80,20 @@ def update_client(
     last_contact_date=None,
     contact_id=None,
 ):
+    """Updating a client
+
+    Args:
+        user_id (int): connected user's ID
+        client_id (int): client's ID needing an update
+        name (str): new client's name
+        firstname (str): new client's firstname
+        email (str): new client's email
+        phone (int): new client's phone number
+        company (str): new client's company name
+        contact_id (int): new client's contact's ID
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
@@ -99,6 +127,15 @@ def update_client(
 
 @requires_permission("update_client_sales")
 def update_client_sales(user_id, client_id, contact_id, current_user_role_id):
+    """Update a client's sales
+
+    Args:
+        user_id (int): connected user's ID
+        client_id (int): client's ID needing an update
+        contact_id (int): client's new contact's ID
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
@@ -121,6 +158,13 @@ def update_client_sales(user_id, client_id, contact_id, current_user_role_id):
 
 @requires_permission("delete_client")
 def delete_client(client_id, current_user_role_id):
+    """Delete an existing client
+
+    Args:
+        client_id (int): client's ID needing to be deleted
+        current_user_role_id (int): role of connected user
+
+    """
     session = Session()
     try:
         client = session.query(Client).filter_by(client_id=client_id).first()
@@ -141,6 +185,13 @@ def delete_client(client_id, current_user_role_id):
 
 
 def update_client_menu(user_id, client_id, current_user_role_id):
+    """Controller displaying update client's menu according to the choice made by the connected user
+
+    Args:
+        user_id (int): connected user's ID
+        client_id (int): client's ID needing to be updated
+        current_user_role_id (int): role of connected user
+    """
     while True:
         update_choice = client_view.ClientView.show_update_client_menu()
         if update_choice == constante.CLIENT_UPDATE_NAME:

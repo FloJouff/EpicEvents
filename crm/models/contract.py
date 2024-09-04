@@ -76,7 +76,3 @@ class Contract(Base):
             self.client_id}. User in charge: {
                 self.commercial_id}"
 
-
-# Client.contracts = relationship(
-#     "Contract", order_by=Contract.contract_id, back_populates="client"
-# )

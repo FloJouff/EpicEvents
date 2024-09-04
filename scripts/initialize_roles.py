@@ -24,6 +24,7 @@ DEFAULT_ROLES = [
 
 
 def initialize_roles():
+    """Initialize roles in database"""
     for role in DEFAULT_ROLES:
         existing_role = session.query(Role).filter_by(role_id=role["role_id"]).first()
         if not existing_role:

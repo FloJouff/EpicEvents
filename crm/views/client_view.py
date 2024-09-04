@@ -25,6 +25,7 @@ console = Console(theme=custom_theme)
 class AdminClientView:
     @staticmethod
     def show_admin_client_menu():
+        """Displays admin's client menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -49,6 +50,7 @@ class AdminClientView:
 class ManagementClientView:
     @staticmethod
     def show_management_client_menu():
+        """Displays management's client menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -73,6 +75,7 @@ class ManagementClientView:
 class SalesClientView:
     @staticmethod
     def show_sales_client_menu():
+        """Displays sales's client menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -98,6 +101,11 @@ class SalesClientView:
 
     @staticmethod
     def get_new_client_info():
+        """Display input prompts to create a new client
+
+        Returns:
+            tuple: new client's datas
+        """
         while True:
             name = console.input("[bold #ff8133]Name : [/bold #ff8133]")
             if validate_name(name):
@@ -118,6 +126,7 @@ class SalesClientView:
         return name, firstname, email, phone, company
 
     def update_client_menu():
+        """Displays update's client menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -145,6 +154,7 @@ class SalesClientView:
 class SupportClientView:
     @staticmethod
     def show_support_client_menu():
+        """Displays support's client menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -163,6 +173,7 @@ class SupportClientView:
 class ClientView:
     @staticmethod
     def show_update_client_menu():
+        """Displays update client's menu"""
         console.print(
             Panel.fit(
                 Padding(
@@ -191,6 +202,11 @@ class ClientView:
 
     @staticmethod
     def get_new_client_name():
+        """Displays input prompts to get a client new name
+
+        Returns:
+            str: name
+        """
         while True:
             name = console.input("[bold #ff8133]Enter new Name : [/bold #ff8133]")
             if validate_name(name):
@@ -199,6 +215,11 @@ class ClientView:
 
     @staticmethod
     def get_new_client_firstname():
+        """Displays input prompts to get a client new firstname
+
+        Returns:
+            str: firstname
+        """
         while True:
             firstname = console.input(
                 "[bold #ff8133]Enter new Firstame : [/bold #ff8133]"
@@ -209,6 +230,11 @@ class ClientView:
 
     @staticmethod
     def get_new_client_email():
+        """Displays input prompts to get a client new email
+
+        Returns:
+            str: email
+        """
         while True:
             email = console.input("[bold #03d01a]Email : [/bold #03d01a]")
             if validate_email(email):
@@ -217,6 +243,11 @@ class ClientView:
 
     @staticmethod
     def get_new_client_phone():
+        """Displays input prompts to get a client new phone number
+
+        Returns:
+            int: phone number
+        """
         while True:
             phone = console.input("[bold #03d01a]Phone : (+33)[/bold #03d01a]")
             if validate_phone_number(phone):
@@ -225,6 +256,11 @@ class ClientView:
 
     @staticmethod
     def get_new_client_company():
+        """Displays input prompts to get a client new company
+
+        Returns:
+            str: company name
+        """
         while True:
             company = console.input(
                 "[bold #ff8133]Enter new company name : [/bold #ff8133]"
@@ -235,6 +271,11 @@ class ClientView:
 
     @staticmethod
     def get_new_client_last_contact():
+        """Displays input prompts to get a client new date of last contact with sales
+
+        Returns:
+            date: date of last contact
+        """
         while True:
             last_contact = console.input(
                 "[bold #ff8133]Enter date of last contact (YYYY-MM-DD): [/bold #ff8133]"
@@ -245,10 +286,16 @@ class ClientView:
 
     @staticmethod
     def show_create_client_success_message():
+        """Displays successfully creating a client"""
         return console.print("[bold blue]Client registered successfully.[/bold blue]")
 
     @staticmethod
     def get_new_client_contact_id():
+        """Displays input prompts to get a client new contact's ID
+
+        Returns:
+            int: new sales'ID
+        """
         while True:
             new_contact_id = console.input(
                 "[bold #03d01a]Enter new contact_ID for this client: [/bold #03d01a]"
@@ -259,10 +306,16 @@ class ClientView:
 
     @staticmethod
     def show_update_client_contact_id():
+        """Displays successfully updating client's new sales"""
         return console.print("Client's sales updated successfully.")
 
     @staticmethod
     def get_client_id_for_update():
+        """Displays input prompts to get a client's ID
+
+        Returns:
+            int: client's ID
+        """
         while True:
             client_id = console.input("[bold #03d01a]Enter client_id : [/bold #03d01a]")
             if validate_id(client_id):
@@ -271,10 +324,16 @@ class ClientView:
 
     @staticmethod
     def show_update_client_success_message():
+        """Displays successfully updating a client"""
         return console.print("Client updated successfully.")
 
     @staticmethod
     def get_client_id_for_deletion():
+        """Displays input prompts to get a client's ID to delete
+
+        Returns:
+            int: client's ID
+        """
         while True:
             client_id = console.input(
                 "[bold #03d01a]Enter the Client ID to delete:  [/bold #03d01a]"
@@ -285,6 +344,11 @@ class ClientView:
 
     @staticmethod
     def display_client_list(client_list):
+        """Displays list of all clients
+
+        Args:
+            client_list (list): list of clients in database
+        """
         table = Table(title="List of Clients")
 
         # Définir les colonnes
@@ -317,14 +381,17 @@ class ClientView:
 
     @staticmethod
     def show_delete_client_success_message():
+        """Displays successfully deleting a client"""
         return console.print("[yellow] Client deleted successfully. [/yellow]")
 
     @staticmethod
     def show_delete_client_error_message():
+        """Displays error message trying to delete a client"""
         return console.print(
             "[italic red]Failed to delete client. Please try again.[/italic red]"
         )
 
     @staticmethod
     def show_client_error_message():
+        """Displays error message trying to create an already existing client"""
         return console.print("[italic red]This client already exists.[/italic red]")

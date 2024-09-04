@@ -19,6 +19,7 @@ console = Console(theme=custom_theme)
 
 class MainView:
     def show_main_menu(self, is_authenticated):
+        """Displays main menu, with authentication"""
         console.print(
             Panel.fit(
                 Padding(
@@ -37,7 +38,7 @@ class MainView:
         return console.input("[bold #a575ef]Select an option: [/bold #a575ef]")
 
     def get_login_credentials(self):
-        # email = console.input("[bold #ff8133] Email: [/bold #ff8133]")
+        """Displays input prompts for the connection"""
         while True:
             email = console.input("[bold #ff8133]Email : [/bold #ff8133]").strip()
             if validate_email(email):
@@ -48,24 +49,31 @@ class MainView:
         return email, password
 
     def show_login_success(self):
+        """Displays success login message"""
         console.print("Login successful.")
 
     def show_login_failure(self):
+        """Displays failure login message"""
         print("[bold red] Authentication failed. Please try again.[/bold red]")
 
     def show_disconnection_success(self):
+        """Displays success disconnection message"""
         console.print("[bold white]Disconnected![/bold white]")
 
     def show_invalid_option_message(self):
+        """Displays error message if the entry is invalid"""
         print("[bold red]Invalid option. Please try again.[/bold red]")
 
     def show_exit_message(self):
+        """Displays goodbye message"""
         console.print("Goodbye!")
 
     def show_session_expiring_message(self):
+        """Displays soon expiring session message"""
         print(
             "[italic red underline ]Your session is about to expire. Please reconnect.[/italic red underline]"
         )
 
     def show_unauthorized_access(self):
+        """Displays unauthorized access message"""
         print("[italic red] Unauthorized access. Please log in again.[/italic red]")

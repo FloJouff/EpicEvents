@@ -22,7 +22,6 @@ from crm.controllers.event_controller import (
     view_no_support_event,
     update_no_support_event,
 )
-from validators import validate_password, validate_email
 import sentry_sdk
 
 
@@ -30,6 +29,13 @@ class ManagementController:
 
     @staticmethod
     def handle_management_menu(user_id, role_id, token):
+        """Controller displaying management main menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 choice = ManagementView.show_management_menu()
@@ -62,6 +68,13 @@ class ManagementController:
 
     @staticmethod
     def update_user_menu(user_id, role_id, token):
+        """Controller displaying management update user's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 update_choice = UserView.show_update_menu()
@@ -97,6 +110,13 @@ class ManagementController:
 
     @staticmethod
     def user_menu(user_id, role_id, token):
+        """Controller displaying management user's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 user_choice = ManagementView.show_management_user_menu()
@@ -129,6 +149,13 @@ class ManagementController:
 
     @staticmethod
     def management_client_menu(user_id, role_id, token):
+        """Controller displaying management client's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 manag_client_choice = ManagementClientView.show_management_client_menu()
@@ -152,6 +179,13 @@ class ManagementController:
 
     @staticmethod
     def management_contract_menu(user_id, role_id, token):
+        """Controller displaying management contract's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 manag_contract_choice = (
@@ -179,6 +213,13 @@ class ManagementController:
 
     @staticmethod
     def management_event_menu(user_id, role_id, token):
+        """Controller displaying management event's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 manag_event_choice = ManagementEventView.show_management_event_menu()

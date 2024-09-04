@@ -93,6 +93,8 @@ python create_admin.py
 or
 
 You can initialize your database with the sql file : Initialize.sql
+In this file, you can modify the information relating to the admin profile you wish to create.
+You should also remember to hash the password you are going to create using hashpswd.py, replacing the default password with the one you want to use.
 
 ### 7. Run the Application
 

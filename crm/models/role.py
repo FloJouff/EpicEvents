@@ -27,6 +27,3 @@ class Role(Base):
     def __repr__(self):
         return f"Role: {self.role}"
 
-
-# INSERT INTO roles (`role_id`, `role`) VALUES ('1', 'gestion'),
-# ('2', 'commercial'), ('3', 'support'), ('4', 'admin');

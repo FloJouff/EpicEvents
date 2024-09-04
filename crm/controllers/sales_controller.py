@@ -16,6 +16,13 @@ class SalesController:
 
     @staticmethod
     def handle_sales_menu(user_id, role_id, token):
+        """Controller displaying sales main menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 choice = SalesView.show_sales_menu()
@@ -44,6 +51,13 @@ class SalesController:
 
     @staticmethod
     def sales_client_menu(user_id, role_id, token):
+        """Controller displaying sales client's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 sales_client_choice = SalesClientView.show_sales_client_menu()
@@ -73,6 +87,13 @@ class SalesController:
 
     @staticmethod
     def sales_contract_menu(user_id, role_id, token):
+        """Controller displaying sales contract's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 sales_contract_choice = SalesContractView.show_sales_contract_menu()
@@ -102,6 +123,13 @@ class SalesController:
 
     @staticmethod
     def sales_event_menu(user_id, role_id, token):
+        """Controller displaying sales event's menu according to the choice made by the connected user
+
+        Args:
+            user_id (int): user's ID
+            role_id (int): connected user role's ID
+            token (str): token  get after authentication
+        """
         if User.authorize(token, role_id):
             while True:
                 sales_event_choice = SalesEventView.show_sales_event_menu()
