@@ -56,7 +56,7 @@ class AdminController:
                         user_id_to_delete, current_user_role_id=role_id
                     )
                     if success:
-                        UserView.show_delete_success_message()
+                        UserView.show_delete_success_message(user_id_to_delete)
                     else:
                         UserView.show_delete_error_message()
                 elif choice == constante.ADMIN_CLIENTS_MENU:

@@ -75,6 +75,7 @@ def update_client(
     current_user_role_id,
     name=None,
     firstname=None,
+    company=None,
     email=None,
     phone=None,
     last_contact_date=None,
@@ -104,6 +105,8 @@ def update_client(
             client.name = name
         if firstname:
             client.firstname = firstname
+        if company:
+            client.company = company
         if email:
             client.email = email
         if phone:

@@ -10,7 +10,6 @@ def mock_session(mocker):
 
 @pytest.fixture
 def mock_permission(mocker):
-    # Moquer le décorateur `requires_permission` pour qu'il retourne simplement la fonction d'origine
     mocker.patch(
         "crm.controllers.client_controller.requires_permission",
         lambda x: lambda *args, **kwargs: x(*args, **kwargs),
@@ -18,14 +17,12 @@ def mock_permission(mocker):
 
 
 def test_create_client_success(mock_session, mock_permission):
-    # Préparer les mocks
     mock_session_instance = mock_session.return_value
     mock_client = MagicMock()
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         None
     )
 
-    # Appeler la fonction
     result = create_client(
         name="John",
         firstname="Doe",
@@ -36,20 +33,17 @@ def test_create_client_success(mock_session, mock_permission):
         current_user_role_id=2,
     )
 
-    # Vérifier le résultat
     assert result is True
     mock_session_instance.add.assert_called_once()
     mock_session_instance.commit.assert_called_once()
 
 
 def test_create_client_already_exists(mock_session, mock_permission):
-    # Préparer les mocks
     mock_session_instance = mock_session.return_value
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         MagicMock()
     )
 
-    # Appeler la fonction
     result = create_client(
         name="John",
         firstname="Doe",
@@ -60,40 +54,33 @@ def test_create_client_already_exists(mock_session, mock_permission):
         current_user_role_id=2,
     )
 
-    # Vérifier le résultat
     assert result is False
     mock_session_instance.add.assert_not_called()
     mock_session_instance.commit.assert_not_called()
 
 
 def test_delete_client_success(mock_session, mock_permission):
-    # Préparer les mocks
     mock_session_instance = mock_session.return_value
     mock_client = MagicMock()
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         mock_client
     )
 
-    # Appeler la fonction
     result = delete_client(client_id=1, current_user_role_id=4)
 
-    # Vérifier le résultat
     assert result is True
     mock_session_instance.delete.assert_called_once_with(mock_client)
     mock_session_instance.commit.assert_called_once()
 
 
 def test_delete_client_not_found(mock_session, mock_permission):
-    # Préparer les mocks
     mock_session_instance = mock_session.return_value
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
         None
     )
 
-    # Appeler la fonction
     result = delete_client(client_id=1, current_user_role_id=4)
 
-    # Vérifier le résultat
     assert result is False
     mock_session_instance.delete.assert_not_called()
     mock_session_instance.commit.assert_not_called()

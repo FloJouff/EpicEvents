@@ -48,32 +48,39 @@ class MainView:
         password = getpass.getpass("")
         return email, password
 
-    def show_login_success(self):
+    @staticmethod
+    def show_login_success():
         """Displays success login message"""
         console.print("Login successful.")
 
-    def show_login_failure(self):
+    @staticmethod
+    def show_login_failure():
         """Displays failure login message"""
         print("[bold red] Authentication failed. Please try again.[/bold red]")
 
-    def show_disconnection_success(self):
+    @staticmethod
+    def show_disconnection_success():
         """Displays success disconnection message"""
         console.print("[bold white]Disconnected![/bold white]")
 
-    def show_invalid_option_message(self):
+    @staticmethod
+    def show_invalid_option_message():
         """Displays error message if the entry is invalid"""
         print("[bold red]Invalid option. Please try again.[/bold red]")
 
-    def show_exit_message(self):
+    @staticmethod
+    def show_exit_message():
         """Displays goodbye message"""
         console.print("Goodbye!")
 
-    def show_session_expiring_message(self):
+    @staticmethod
+    def show_session_expiring_message():
         """Displays soon expiring session message"""
         print(
             "[italic red underline ]Your session is about to expire. Please reconnect.[/italic red underline]"
         )
 
-    def show_unauthorized_access(self):
+    @staticmethod
+    def show_unauthorized_access():
         """Displays unauthorized access message"""
         print("[italic red] Unauthorized access. Please log in again.[/italic red]")

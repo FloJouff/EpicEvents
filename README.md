@@ -29,6 +29,8 @@ Before running this project, ensure you have the following installed:
 
 ### 1. Clone the Repository
 
+At the root of your project:
+
 ```bash
 git clone https://github.com/FloJouff/EpicEvents
 
@@ -38,7 +40,7 @@ git clone https://github.com/FloJouff/EpicEvents
 
 ```bash
 python -m venv venv
-On Mac : `source venv/bin/activate`  
+On MacOs/Linux : `source venv/bin/activate`  
 On Windows : ` venv\Scripts\activate`
 ```
 

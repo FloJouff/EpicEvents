@@ -24,16 +24,13 @@ def controller(mock_view):
 
 
 def test_main_menu_logout(controller, mocker):
-    # Simuler un utilisateur déjà connecté
     controller.token = "fake_token"
     controller.role_id = 1
     controller.user_id = "fake_user_id"
     controller.token_expiry = datetime.now() + timedelta(hours=1)
 
-    # Simuler une séquence de choix : d'abord déconnexion, puis quitter
     controller.view.show_main_menu.side_effect = [constante.DISCONNECT, "0"]
 
-    # Patcher handle_disconnection pour simuler la déconnexion
     def mock_disconnect():
         controller.token = None
         controller.role_id = None
@@ -44,21 +41,14 @@ def test_main_menu_logout(controller, mocker):
         controller, "handle_disconnection", side_effect=mock_disconnect
     )
 
-    # Exécuter main_menu
     controller.main_menu()
 
-    # Vérifications
     assert controller.view.show_main_menu.call_count == 2
-    controller.view.show_main_menu.assert_any_call(
-        True
-    )  # Premier appel avec utilisateur connecté
-    controller.view.show_main_menu.assert_any_call(
-        False
-    )  # Deuxième appel après déconnexion
+    controller.view.show_main_menu.assert_any_call(True)
+    controller.view.show_main_menu.assert_any_call(False)
     mock_handle_disconnection.assert_called_once()
     controller.view.show_exit_message.assert_called_once()
 
-    # Vérifier que l'utilisateur est bien déconnecté
     assert controller.token is None
     assert controller.role_id is None
     assert controller.user_id is None
@@ -66,21 +56,17 @@ def test_main_menu_logout(controller, mocker):
 
 
 def test_main_menu_login(controller, mocker):
-    # Simuler un utilisateur non connecté initialement
     controller.token = None
     controller.role_id = None
     controller.user_id = None
     controller.token_expiry = None
 
-    # Simuler une séquence de choix : d'abord connexion, puis quitter
     controller.view.show_main_menu.side_effect = [constante.LOGIN, "0"]
 
-    # Mock les informations de connexion
     mock_email = "test@example.com"
     mock_password = "password123"
     controller.view.get_login_credentials.return_value = (mock_email, mock_password)
 
-    # Mock la fonction d'authentification
     mock_token = "fake_token"
     mock_role_id = 2
     mocker.patch(
@@ -88,33 +74,24 @@ def test_main_menu_login(controller, mocker):
         return_value=(mock_token, mock_role_id),
     )
 
-    # Mock le décodage JWT
     mock_user_id = "fake_user_id"
     mock_exp = datetime.now() + timedelta(hours=1)
     mocker.patch(
         "jwt.decode", return_value={"user_id": mock_user_id, "exp": mock_exp.timestamp()}
     )
 
-    # Mock handle_role_specific_actions pour éviter les effets secondaires
     mock_handle_role = mocker.patch.object(controller, "handle_role_specific_actions")
 
-    # Exécuter main_menu
     controller.main_menu()
 
-    # Vérifications
     assert controller.view.show_main_menu.call_count == 2
-    controller.view.show_main_menu.assert_any_call(
-        False
-    )  # Premier appel avec utilisateur non connecté
-    controller.view.show_main_menu.assert_any_call(
-        True
-    )  # Deuxième appel après connexion
+    controller.view.show_main_menu.assert_any_call(False)
+    controller.view.show_main_menu.assert_any_call(True)
 
     controller.view.get_login_credentials.assert_called_once()
     controller.view.show_login_success.assert_called_once()
     mock_handle_role.assert_called_once()
 
-    # Vérifier que l'utilisateur est bien connecté
     assert controller.token == mock_token
     assert controller.role_id == mock_role_id
     assert controller.user_id == mock_user_id
@@ -199,49 +176,3 @@ def test_session_expiring(controller, mocker):
 
     controller.view.show_session_expiring_message.assert_called()
     controller.handle_disconnection.assert_called()
-
-
-# def test_token_expiration(controller, mocker):
-#     # Simuler un utilisateur connecté avec un token expiré
-#     expired_time = datetime.now() - timedelta(minutes=5)
-#     controller.token = "expired_token"
-#     controller.role_id = 1
-#     controller.user_id = "fake_user_id"
-#     controller.token_expiry = expired_time
-
-#     # Mock jwt.decode pour simuler un token expiré
-#     mock_jwt_decode = mocker.patch("jwt.decode")
-#     mock_jwt_decode.side_effect = jwt.ExpiredSignatureError
-
-#     # Simuler une séquence de choix : d'abord une action quelconque, puis quitter
-#     controller.view.show_main_menu.side_effect = ["1", "0"]
-
-#     # Mock handle_role_specific_actions pour éviter les effets secondaires
-#     mock_handle_role = mocker.patch.object(controller, "handle_role_specific_actions")
-
-#     # Mock handle_disconnection pour vérifier qu'il est appelé
-#     mock_handle_disconnection = mocker.patch.object(controller, "handle_disconnection")
-
-#     # Exécuter main_menu
-#     controller.main_menu()
-
-#     # Vérifications
-#     assert controller.view.show_main_menu.call_count == 2
-#     controller.view.show_main_menu.assert_any_call(
-#         True
-#     )  # Premier appel, l'utilisateur pense être connecté
-#     controller.view.show_main_menu.assert_any_call(
-#         False
-#     )  # Deuxième appel, après détection de l'expiration
-
-#     mock_jwt_decode.assert_called_once()
-#     controller.view.show_session_expired.assert_called_once()
-#     mock_handle_disconnection.assert_called_once()
-
-#     # Vérifier que l'utilisateur a été déconnecté
-#     assert controller.token is None
-#     assert controller.role_id is None
-#     assert controller.user_id is None
-#     assert controller.token_expiry is None
-
-#     controller.view.show_exit_message.assert_called_once()

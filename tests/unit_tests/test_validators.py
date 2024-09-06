@@ -7,6 +7,8 @@ from validators import (
     validate_password,
     validate_name,
     validate_id,
+    validate_company_name,
+    validate_number,
 )
 
 
@@ -47,13 +49,31 @@ def test_validate_name_valid():
 
 
 def test_validate_name_invalid(mocker):
-
     assert validate_name("J") is False
 
 
 def test_validate_id_valid():
     assert validate_id("12345") is True
 
-
 def test_validate_id_invalid(mocker):
     assert validate_id("abc") is False
+
+
+def test_validate_number_valid():
+    assert validate_number("12345") is True
+
+
+def test_validate_number_invalid(mocker):
+    assert validate_number("abc") is False
+
+
+def test_validate_company_name_valid():
+    assert validate_company_name("Company 1") is True
+
+
+def test_validate_company_name_invalid(mocker):
+    assert validate_company_name("J") is False
+
+
+def test_validate_company_name_invalid_bis(mocker):
+    assert validate_company_name("J&12") is False

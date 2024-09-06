@@ -61,7 +61,6 @@ def test_create_contract(mock_uuid, mock_session):
     result = create_contract(
         client_id=1, commercial_id=2, total_amount=1000, current_user_role_id=1
     )
-    print("test create:", result)
 
     assert result is True
     mock_session.add.assert_called_once()

@@ -73,3 +73,19 @@ def validate_number(cost):
     else:
         print("[bold red]Invalid cost. Must contain only digits.[/bold red]")
         return False
+
+
+def validate_company_name(name):
+    """Validate thar company name only contain letters, digit, space or hyphen
+
+    Args:
+        name (str): Company name
+    """
+    name_regex = r"^[\w\s-]{2,50}$"
+    if re.match(name_regex, name):
+        return True
+    else:
+        print(
+            "[bold red]Invalid company name. Must be 2-50 characters long and contain only letters, digit, spaces, or hyphens.[/bold red]"
+        )
+        return False

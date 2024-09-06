@@ -5,6 +5,7 @@ from validators import (
     validate_name,
     validate_date,
     validate_id,
+    validate_company_name,
 )
 from rich import print
 from rich.panel import Panel
@@ -122,7 +123,10 @@ class SalesClientView:
             phone = console.input("[bold #03d01a]Phone : (+33)[/bold #03d01a]")
             if validate_phone_number(phone):
                 break
-        company = console.input("[bold #03d01a]Client's company : [/bold #03d01a]")
+        while True:
+            company = console.input("[bold #03d01a]Client's company :[/bold #03d01a]")
+            if validate_company_name(company):
+                break
         return name, firstname, email, phone, company
 
     def update_client_menu():
@@ -265,7 +269,7 @@ class ClientView:
             company = console.input(
                 "[bold #ff8133]Enter new company name : [/bold #ff8133]"
             )
-            if validate_name(company):
+            if validate_company_name(company):
                 break
         return company
 
@@ -287,7 +291,9 @@ class ClientView:
     @staticmethod
     def show_create_client_success_message():
         """Displays successfully creating a client"""
-        return console.print("[bold blue]Client registered successfully.[/bold blue]")
+        return console.print(
+            "[bold yellow]Client registered successfully.[/bold yellow]"
+        )
 
     @staticmethod
     def get_new_client_contact_id():
@@ -307,7 +313,9 @@ class ClientView:
     @staticmethod
     def show_update_client_contact_id():
         """Displays successfully updating client's new sales"""
-        return console.print("Client's sales updated successfully.")
+        return console.print(
+            "[bold yellow]Client's sales updated successfully.[/bold yellow]"
+        )
 
     @staticmethod
     def get_client_id_for_update():
@@ -325,7 +333,7 @@ class ClientView:
     @staticmethod
     def show_update_client_success_message():
         """Displays successfully updating a client"""
-        return console.print("Client updated successfully.")
+        return console.print("[bold yellow]Client updated successfully.[/bold yellow]")
 
     @staticmethod
     def get_client_id_for_deletion():
@@ -382,7 +390,7 @@ class ClientView:
     @staticmethod
     def show_delete_client_success_message():
         """Displays successfully deleting a client"""
-        return console.print("[yellow] Client deleted successfully. [/yellow]")
+        return console.print("[bold yellow] Client deleted successfully. [/bold yellow]")
 
     @staticmethod
     def show_delete_client_error_message():

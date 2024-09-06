@@ -7,7 +7,6 @@ from crm.database import Session
 
 @pytest.fixture
 def mock_session(mocker):
-    # Mock the Session object
     mock_session = mocker.patch("crm.controllers.user_controller.Session", autospec=True)
     mock_session_instance = mock_session.return_value
     mock_session_instance.query.return_value.filter_by.return_value.first.return_value = (
@@ -18,13 +17,11 @@ def mock_session(mocker):
 
 @pytest.fixture
 def mock_password_hasher(mocker):
-    # Mock the PasswordHasher object
     return mocker.patch("crm.controllers.user_controller.ph")
 
 
 @pytest.fixture
 def mock_user_model(mocker):
-    # Mock the User model
     return mocker.patch("crm.models.User")
 
 

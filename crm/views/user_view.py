@@ -63,7 +63,7 @@ class AdminView:
             password = getpass.getpass(
                 "Password (Your password must contain 8 characters): "
             )
-            if validate_password(email):
+            if validate_password(password):
                 break
         role = console.input(
             "[bold #ff8133]User's role ( 1:management \n 2:sales \n 3:support \n 4:admin) : [bold #ff8133]"
@@ -329,7 +329,7 @@ class UserView:
     @staticmethod
     def show_password_change_successfully():
         """Displays success message trying to change password"""
-        return console.print("Password changed successfully.")
+        return console.print("[bold yellow]Password changed successfully.[/bold yellow]")
 
     @staticmethod
     def show_password_change_failed():
@@ -351,7 +351,7 @@ class UserView:
     @staticmethod
     def show_create_user_success():
         """Displays create user message successful"""
-        return console.print("User registered successfully.")
+        return console.print("[bold yellow]User registered successfully.[/bold yellow]")
 
     @staticmethod
     def display_user_list(users):
@@ -382,7 +382,7 @@ class UserView:
     @staticmethod
     def show_update_user_success():
         """Displays update user message successful"""
-        return console.print("User updated successfully.")
+        return console.print("[bold yellow]User updated successfully.[/bold yellow]")
 
     @staticmethod
     def display_welcome_message(name, firstname):
