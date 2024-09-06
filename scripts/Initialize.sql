@@ -25,5 +25,5 @@ VALUES
     ('4', 'ADMIN');
 
 INSERT INTO `User` (`name`, `firstname`, `email`, `role_id`, `password`)
-VALUES ('admin', 'admin', '(admin@mail.com)', '4', '$argon2id$v=19$m=65536,t=3,p=4$H/trA+MXh+6KpBCEVdWENw$XI39fFhWL5Vbto2Cjqbb5PclWesR675ziEsfRWeupFg');
+VALUES ('admin', 'admin', '(admin@mail.com)', '4', 'your encrypted password with hachpswd.py');
 

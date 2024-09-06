@@ -3,7 +3,7 @@ from argon2 import PasswordHasher
 ph = PasswordHasher()
 
 
-password = "erineetnathan"
+password = "your admin password"
 
 hash_password = ph.hash(password)
 
