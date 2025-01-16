@@ -154,12 +154,12 @@ def update_assigned_event(
     session = Session()
     try:
         event = session.query(Event).filter_by(event_id=event_id).first()
-        if not event:
-            event_view.EventView.event_not_found()
-            return False
         if event.support_id != user_id:
             event_view.EventView.show_acces_event_denied()
             return None
+        if not event:
+            event_view.EventView.event_not_found()
+            return False
         if start_date:
             event.start_date = start_date
         if end_date:

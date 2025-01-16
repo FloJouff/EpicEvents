@@ -66,7 +66,7 @@ class AdminView:
             if validate_password(password):
                 break
         role = console.input(
-            "[bold #ff8133]User's role ( 1:management \n 2:sales \n 3:support \n 4:admin) : [bold #ff8133]"
+            "[bold #ff8133]User's role: (\n 1:management \n 2:sales \n 3:support \n 4:admin) : [bold #ff8133]"
         )
         role_id = int(role)
         return name, firstname, email, password, role_id
@@ -173,7 +173,7 @@ class SupportView:
         console.print(
             Panel.fit(
                 Padding(
-                    "---[bold white] Support Main Menu Support [/bold white]---",
+                    "---[bold white] Support Main Menu[/bold white]---",
                     (1, 2),
                 )
             )
